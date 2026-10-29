@@ -23,8 +23,9 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController _searchController = TextEditingController(
-    text: 'Pizza',
+    text: '',
   );
+  String _activeSearchChip = 'Noodle';
 
   @override
   void dispose() {
@@ -35,8 +36,10 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     final query = _searchController.text.trim().toLowerCase();
-    final hasMeatballResult =
-        query.isEmpty || query.contains('meat') || query.contains('ball');
+    final hasMeatballResult = query.contains('meat') || query.contains('ball');
+    final hasNoodleResult =
+        query.contains('noodle') ||
+        (query.isEmpty && _activeSearchChip == 'Noodle');
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -63,7 +66,16 @@ class _SearchScreenState extends State<SearchScreen> {
                           onChanged: (_) => setState(() {}),
                         ),
                         const SizedBox(height: 16),
-                        if (query.isNotEmpty && hasMeatballResult)
+                        if (_activeSearchChip.isNotEmpty)
+                          _SearchFilterChip(
+                            label: _activeSearchChip,
+                            onClear: () =>
+                                setState(() => _activeSearchChip = ''),
+                          ),
+                        if (hasNoodleResult && query.isNotEmpty ||
+                            query.isEmpty && hasNoodleResult)
+                          const _NoodleResultCard()
+                        else if (query.isNotEmpty && hasMeatballResult)
                           const _MeatballResultCard()
                         else if (query.isEmpty)
                           const _DefaultSearchContent()
@@ -85,6 +97,47 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _SearchFilterChip extends StatelessWidget {
+  const _SearchFilterChip({required this.label, required this.onClear});
+
+  final String label;
+  final VoidCallback onClear;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onClear,
+        borderRadius: BorderRadius.circular(20),
+        child: Container(
+          margin: const EdgeInsets.only(bottom: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+          decoration: BoxDecoration(
+            color: const Color(0xFF008C8C),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                label,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              const SizedBox(width: 4),
+              const Icon(Icons.cancel, size: 12, color: Colors.white),
+            ],
           ),
         ),
       ),
@@ -178,6 +231,74 @@ class _MeatballResultCard extends StatelessWidget {
                 const SizedBox(height: 8),
                 const Text(
                   'Rp63.500',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _NoodleResultCard extends StatelessWidget {
+  const _NoodleResultCard();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 174,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(6),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x1F000000),
+            offset: Offset(0, 1),
+            blurRadius: 5,
+          ),
+        ],
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Image.asset(
+            'assets/figma/food_noodle.png',
+            width: 174,
+            height: 160,
+            fit: BoxFit.cover,
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Noodle Ex',
+                  style: Theme.of(context).textTheme.titleMedium
+                      ?.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+                ),
+                const SizedBox(height: 8),
+                const Row(
+                  children: [
+                    Icon(Icons.star, color: Color(0xFFFFC107), size: 16),
+                    SizedBox(width: 8),
+                    Text(
+                      '4.8',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xFFB3B3B3),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  'Rp42.000',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                 ),
               ],
