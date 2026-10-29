@@ -12,6 +12,7 @@ class FoodScreen extends StatefulWidget {
 class _FoodScreenState extends State<FoodScreen> {
   String selectedCategory = 'Dinner Food';
   bool showFoodDetails = false;
+  bool showOrderConfirmation = false;
 
   final categories = const [
     'Dinner Food',
@@ -89,6 +90,15 @@ class _FoodScreenState extends State<FoodScreen> {
             if (showFoodDetails)
               _FoodDetailsSheet(
                 onDismiss: () => setState(() => showFoodDetails = false),
+                onPlaced: () => setState(() {
+                  showFoodDetails = false;
+                  showOrderConfirmation = true;
+                }),
+              ),
+            if (showOrderConfirmation)
+              const Align(
+                alignment: Alignment.bottomCenter,
+                child: _OrderConfirmationPopup(),
               ),
           ],
         ),
@@ -127,14 +137,31 @@ class _FoodHeader extends StatelessWidget {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
             ),
           ),
-          Container(
-            width: 44,
-            height: 44,
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(Icons.shopping_cart_outlined, size: 21),
+          Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Container(
+                width: 44,
+                height: 44,
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(Icons.shopping_cart_outlined, size: 21),
+              ),
+              Positioned(
+                right: 1,
+                top: 1,
+                child: Container(
+                  width: 10,
+                  height: 10,
+                  decoration: const BoxDecoration(
+                    color: Color(0xFF008C8C),
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -339,8 +366,9 @@ class _FoodCard extends StatelessWidget {
 }
 
 class _FoodDetailsSheet extends StatefulWidget {
-  const _FoodDetailsSheet({required this.onDismiss});
+  const _FoodDetailsSheet({required this.onDismiss, required this.onPlaced});
   final VoidCallback onDismiss;
+  final VoidCallback onPlaced;
 
   @override
   State<_FoodDetailsSheet> createState() => _FoodDetailsSheetState();
@@ -449,7 +477,7 @@ class _FoodDetailsSheetState extends State<_FoodDetailsSheet> {
                           width: double.infinity,
                           height: 48,
                           child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: widget.onPlaced,
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xFF008C8C),
                               foregroundColor: Colors.white,
@@ -473,6 +501,58 @@ class _FoodDetailsSheetState extends State<_FoodDetailsSheet> {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _OrderConfirmationPopup extends StatelessWidget {
+  const _OrderConfirmationPopup();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 371,
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        color: const Color(0xFF49516F),
+        borderRadius: BorderRadius.circular(6),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x1A000000),
+            blurRadius: 10,
+            offset: Offset(1, 1),
+          ),
+        ],
+      ),
+      child: const Row(
+        children: [
+          Expanded(
+            child: Text(
+              'Successfuly place order',
+              style: TextStyle(color: Colors.white, fontSize: 16, height: 1.6),
+            ),
+          ),
+          SizedBox(width: 32),
+          DecoratedBox(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(6)),
+            ),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              child: Text(
+                'Cart',
+                style: TextStyle(
+                  color: Color(0xFF008C8C),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
