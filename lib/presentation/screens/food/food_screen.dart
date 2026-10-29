@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class FoodScreen extends StatefulWidget {
   const FoodScreen({super.key, required this.onBack});
@@ -14,7 +15,7 @@ class _FoodScreenState extends State<FoodScreen> {
   bool showFoodDetails = false;
   bool showOrderConfirmation = false;
   bool hasPlacedOrder = false;
-  String searchQuery = 'Meat';
+  String searchQuery = 'Pizza';
   late final TextEditingController searchController;
 
   final categories = const [
@@ -92,26 +93,37 @@ class _FoodScreenState extends State<FoodScreen> {
                             setState(() => selectedCategory = category),
                       ),
                     ),
-                    SliverPadding(
-                      padding: const EdgeInsets.fromLTRB(20, 18, 20, 24),
-                      sliver: SliverGrid(
-                        delegate: SliverChildBuilderDelegate(
-                          (context, index) => _FoodCard(
-                            food: visibleFoods[index],
-                            showRatingBadge: searchQuery.isEmpty,
-                            onTap: () => setState(() => showFoodDetails = true),
-                          ),
-                          childCount: visibleFoods.length,
+                    if (visibleFoods.isEmpty)
+                      SliverToBoxAdapter(
+                        child: _EmptyFoodResult(
+                          onFindOtherFood: () {
+                            searchController.clear();
+                            setState(() => searchQuery = '');
+                          },
                         ),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              mainAxisSpacing: 18,
-                              crossAxisSpacing: 16,
-                              mainAxisExtent: 248,
+                      )
+                    else
+                      SliverPadding(
+                        padding: const EdgeInsets.fromLTRB(20, 18, 20, 24),
+                        sliver: SliverGrid(
+                          delegate: SliverChildBuilderDelegate(
+                            (context, index) => _FoodCard(
+                              food: visibleFoods[index],
+                              showRatingBadge: searchQuery.isEmpty,
+                              onTap: () =>
+                                  setState(() => showFoodDetails = true),
                             ),
+                            childCount: visibleFoods.length,
+                          ),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                mainAxisSpacing: 18,
+                                crossAxisSpacing: 16,
+                                mainAxisExtent: 248,
+                              ),
+                        ),
                       ),
-                    ),
                   ],
                 ),
               ),
@@ -132,6 +144,58 @@ class _FoodScreenState extends State<FoodScreen> {
               ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _EmptyFoodResult extends StatelessWidget {
+  const _EmptyFoodResult({required this.onFindOtherFood});
+
+  final VoidCallback onFindOtherFood;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 48, 20, 24),
+      child: Column(
+        children: [
+          SvgPicture.asset(
+            'assets/figma/food_empty_restaurant.svg',
+            width: 160,
+            height: 160,
+          ),
+          const SizedBox(height: 24),
+          const Text(
+            'Well, there is no food you are\nlooking for :(',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.w600,
+              height: 1.2,
+            ),
+          ),
+          const SizedBox(height: 88),
+          SizedBox(
+            width: double.infinity,
+            height: 48,
+            child: ElevatedButton(
+              onPressed: onFindOtherFood,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF008C8C),
+                foregroundColor: Colors.white,
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6),
+                ),
+              ),
+              child: const Text(
+                'Find Other Food',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
