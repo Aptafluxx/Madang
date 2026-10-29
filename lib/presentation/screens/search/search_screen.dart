@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:madang/presentation/screens/home/widgets/navigation/bottom_navigation.dart';
 import 'package:madang/presentation/screens/home/widgets/restaurant_card.dart';
 
@@ -22,7 +23,7 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController _searchController = TextEditingController(
-    text: 'Meatball',
+    text: 'Pizza',
   );
 
   @override
@@ -65,7 +66,14 @@ class _SearchScreenState extends State<SearchScreen> {
                         if (query.isNotEmpty && hasMeatballResult)
                           const _MeatballResultCard()
                         else if (query.isEmpty)
-                          const _DefaultSearchContent(),
+                          const _DefaultSearchContent()
+                        else if (query.isNotEmpty)
+                          _SearchEmptyResult(
+                            onFindOther: () {
+                              _searchController.clear();
+                              setState(() {});
+                            },
+                          ),
                         const SizedBox(height: 24),
                       ],
                     ),
@@ -222,6 +230,56 @@ class _DefaultSearchContent extends StatelessWidget {
               price: 'Rp135.000',
             ),
           ],
+        ),
+      ],
+    );
+  }
+}
+
+class _SearchEmptyResult extends StatelessWidget {
+  const _SearchEmptyResult({required this.onFindOther});
+
+  final VoidCallback onFindOther;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const SizedBox(height: 80),
+        SvgPicture.asset(
+          'assets/figma/search_empty_restaurant.svg',
+          width: 160,
+          height: 160,
+        ),
+        const SizedBox(height: 16),
+        const Text(
+          'Well, there is no result you are looking for :(',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.w600,
+            height: 1.2,
+          ),
+        ),
+        const SizedBox(height: 32),
+        SizedBox(
+          width: double.infinity,
+          height: 48,
+          child: ElevatedButton(
+            onPressed: onFindOther,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF008C8C),
+              foregroundColor: Colors.white,
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(6),
+              ),
+            ),
+            child: const Text(
+              'Find Other',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            ),
+          ),
         ),
       ],
     );
