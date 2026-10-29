@@ -26,37 +26,14 @@ class _FoodScreenState extends State<FoodScreen> {
       'Meatball Sweatie',
       '4.9',
       'Rp63.500',
-      'https://images.unsplash.com/photo-1529042410759-befb1204b468?auto=format&fit=crop&w=500&q=80',
+      'assets/figma/food_meatball.png',
     ),
-    _FoodData(
-      'Noodle Ex',
-      '4.8',
-      'Rp42.000',
-      'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=500&q=80',
-    ),
+    _FoodData('Noodle Ex', '4.8', 'Rp42.000', 'assets/figma/food_noodle.png'),
     _FoodData(
       'Burger Ala Ala',
       '4.7',
       'Rp55.500',
-      'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=500&q=80',
-    ),
-    _FoodData(
-      'Chicken Collage',
-      '4.5',
-      'Rp78.200',
-      'https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=500&q=80',
-    ),
-    _FoodData(
-      'Fried Rice Uenak',
-      '4.6',
-      'Rp34.000',
-      'https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=500&q=80',
-    ),
-    _FoodData(
-      'Chocolate Cream',
-      '4.7',
-      'Rp23.000',
-      'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=500&q=80',
+      'assets/figma/food_burger.png',
     ),
   ];
 
@@ -145,7 +122,7 @@ class _FoodHeader extends StatelessWidget {
           ),
           const Expanded(
             child: Text(
-              'Food Page',
+              'Food',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
             ),
@@ -230,20 +207,31 @@ class _CategoryList extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
                 color: selected
-                    ? const Color(0xFFDEEEEB)
+                    ? const Color(0xFF008C8C)
                     : const Color(0xFFF3F1F1),
                 borderRadius: BorderRadius.circular(20),
               ),
               alignment: Alignment.center,
-              child: Text(
-                category,
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: selected ? FontWeight.w500 : FontWeight.w400,
-                  color: selected
-                      ? Theme.of(context).colorScheme.primary
-                      : Colors.black,
-                ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    category,
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: selected ? FontWeight.w500 : FontWeight.w400,
+                      color: selected ? Colors.white : Colors.black,
+                    ),
+                  ),
+                  if (selected) ...[
+                    const SizedBox(width: 4),
+                    const Icon(
+                      Icons.cancel_rounded,
+                      size: 16,
+                      color: Colors.white,
+                    ),
+                  ],
+                ],
               ),
             ),
           );
@@ -283,7 +271,7 @@ class _FoodCard extends StatelessWidget {
                 SizedBox(
                   height: 160,
                   width: double.infinity,
-                  child: Image.network(
+                  child: Image.asset(
                     food.imageUrl,
                     fit: BoxFit.cover,
                     errorBuilder: (_, _, _) =>
