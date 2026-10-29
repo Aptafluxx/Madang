@@ -20,6 +20,7 @@ class RestaurantCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 160,
+      height: 268,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
@@ -82,35 +83,33 @@ class RestaurantCard extends StatelessWidget {
               ),
             ],
           ),
-          Flexible(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(8, 10, 8, 8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    title,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.titleMedium
-                        ?.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    description,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    price,
-                    style: Theme.of(context).textTheme.bodyMedium
-                        ?.copyWith(fontSize: 14, fontWeight: FontWeight.w400),
-                  ),
-                ],
-              ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8, 10, 8, 8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.titleMedium
+                      ?.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  description,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  price,
+                  style: Theme.of(context).textTheme.bodyMedium
+                      ?.copyWith(fontSize: 14, fontWeight: FontWeight.w400),
+                ),
+              ],
             ),
           ),
         ],

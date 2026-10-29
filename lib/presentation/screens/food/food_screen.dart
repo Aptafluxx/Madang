@@ -72,12 +72,14 @@ class _FoodScreenState extends State<FoodScreen> {
                 child: CustomScrollView(
                   slivers: [
                     SliverToBoxAdapter(
+                      key: const ValueKey('food-header'),
                       child: _FoodHeader(
                         onBack: widget.onBack,
                         showCartBadge: hasPlacedOrder,
                       ),
                     ),
                     SliverToBoxAdapter(
+                      key: const ValueKey('food-search'),
                       child: _SearchField(
                         theme: theme,
                         controller: searchController,
@@ -86,6 +88,7 @@ class _FoodScreenState extends State<FoodScreen> {
                       ),
                     ),
                     SliverToBoxAdapter(
+                      key: const ValueKey('food-categories'),
                       child: _CategoryList(
                         categories: categories,
                         selectedCategory: selectedCategory,
@@ -95,6 +98,7 @@ class _FoodScreenState extends State<FoodScreen> {
                     ),
                     if (visibleFoods.isEmpty)
                       SliverToBoxAdapter(
+                        key: const ValueKey('food-empty-result'),
                         child: _EmptyFoodResult(
                           onFindOtherFood: () {
                             searchController.clear();
@@ -104,10 +108,14 @@ class _FoodScreenState extends State<FoodScreen> {
                       )
                     else
                       SliverPadding(
+                        key: const ValueKey('food-results'),
                         padding: const EdgeInsets.fromLTRB(20, 18, 20, 24),
                         sliver: SliverGrid(
                           delegate: SliverChildBuilderDelegate(
                             (context, index) => _FoodCard(
+                              key: ValueKey(
+                                'food-card-${visibleFoods[index].name}',
+                              ),
                               food: visibleFoods[index],
                               showRatingBadge: searchQuery.isEmpty,
                               onTap: () =>
@@ -120,7 +128,7 @@ class _FoodScreenState extends State<FoodScreen> {
                                 crossAxisCount: 2,
                                 mainAxisSpacing: 18,
                                 crossAxisSpacing: 16,
-                                mainAxisExtent: 248,
+                                mainAxisExtent: 252,
                               ),
                         ),
                       ),
@@ -366,6 +374,7 @@ class _CategoryList extends StatelessWidget {
 
 class _FoodCard extends StatelessWidget {
   const _FoodCard({
+    super.key,
     required this.food,
     required this.onTap,
     required this.showRatingBadge,
