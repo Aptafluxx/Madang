@@ -10,9 +10,12 @@ class FoodScreen extends StatefulWidget {
 }
 
 class _FoodScreenState extends State<FoodScreen> {
-  String selectedCategory = 'Dinner Food';
+  String selectedCategory = '';
   bool showFoodDetails = false;
   bool showOrderConfirmation = false;
+  bool hasPlacedOrder = false;
+  String searchQuery = 'Meat';
+  late final TextEditingController searchController;
 
   final categories = const [
     'Dinner Food',
@@ -39,8 +42,23 @@ class _FoodScreenState extends State<FoodScreen> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    searchController = TextEditingController(text: searchQuery);
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final visibleFoods = foods.where((food) {
+      return food.name.toLowerCase().contains(searchQuery.toLowerCase());
+    }).toList();
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
@@ -53,9 +71,19 @@ class _FoodScreenState extends State<FoodScreen> {
                 child: CustomScrollView(
                   slivers: [
                     SliverToBoxAdapter(
-                      child: _FoodHeader(onBack: widget.onBack),
+                      child: _FoodHeader(
+                        onBack: widget.onBack,
+                        showCartBadge: hasPlacedOrder,
+                      ),
                     ),
-                    SliverToBoxAdapter(child: _SearchField(theme: theme)),
+                    SliverToBoxAdapter(
+                      child: _SearchField(
+                        theme: theme,
+                        controller: searchController,
+                        onChanged: (value) =>
+                            setState(() => searchQuery = value.trim()),
+                      ),
+                    ),
                     SliverToBoxAdapter(
                       child: _CategoryList(
                         categories: categories,
@@ -69,10 +97,11 @@ class _FoodScreenState extends State<FoodScreen> {
                       sliver: SliverGrid(
                         delegate: SliverChildBuilderDelegate(
                           (context, index) => _FoodCard(
-                            food: foods[index],
+                            food: visibleFoods[index],
+                            showRatingBadge: searchQuery.isEmpty,
                             onTap: () => setState(() => showFoodDetails = true),
                           ),
-                          childCount: foods.length,
+                          childCount: visibleFoods.length,
                         ),
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
@@ -93,6 +122,7 @@ class _FoodScreenState extends State<FoodScreen> {
                 onPlaced: () => setState(() {
                   showFoodDetails = false;
                   showOrderConfirmation = true;
+                  hasPlacedOrder = true;
                 }),
               ),
             if (showOrderConfirmation)
@@ -108,59 +138,52 @@ class _FoodScreenState extends State<FoodScreen> {
 }
 
 class _FoodHeader extends StatelessWidget {
-  const _FoodHeader({required this.onBack});
+  const _FoodHeader({required this.onBack, required this.showCartBadge});
   final VoidCallback onBack;
+  final bool showCartBadge;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 12, 20, 14),
+      padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
       child: Row(
         children: [
           InkWell(
             onTap: onBack,
             borderRadius: BorderRadius.circular(22),
-            child: Container(
-              width: 44,
-              height: 44,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
+            child: const SizedBox(
+              width: 24,
+              height: 24,
+              child: Icon(Icons.arrow_back, size: 24),
             ),
           ),
-          const Expanded(
-            child: Text(
-              'Food',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-            ),
+          const SizedBox(width: 16),
+          const Text(
+            'Food',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
           ),
+          const Spacer(),
           Stack(
             clipBehavior: Clip.none,
             children: [
-              Container(
-                width: 44,
-                height: 44,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(Icons.shopping_cart_outlined, size: 21),
+              const SizedBox(
+                width: 24,
+                height: 24,
+                child: Icon(Icons.shopping_cart_outlined, size: 24),
               ),
-              Positioned(
-                right: 1,
-                top: 1,
-                child: Container(
-                  width: 10,
-                  height: 10,
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF008C8C),
-                    shape: BoxShape.circle,
+              if (showCartBadge)
+                Positioned(
+                  right: 1,
+                  top: 1,
+                  child: Container(
+                    width: 10,
+                    height: 10,
+                    decoration: const BoxDecoration(
+                      color: Color(0xFF008C8C),
+                      shape: BoxShape.circle,
+                    ),
                   ),
                 ),
-              ),
             ],
           ),
         ],
@@ -170,8 +193,14 @@ class _FoodHeader extends StatelessWidget {
 }
 
 class _SearchField extends StatelessWidget {
-  const _SearchField({required this.theme});
+  const _SearchField({
+    required this.theme,
+    required this.controller,
+    required this.onChanged,
+  });
   final ThemeData theme;
+  final TextEditingController controller;
+  final ValueChanged<String> onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -181,7 +210,8 @@ class _SearchField extends StatelessWidget {
         height: 48,
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: const Color(0xFFB3B3B3)),
+          borderRadius: BorderRadius.circular(6),
         ),
         child: Row(
           children: [
@@ -190,6 +220,8 @@ class _SearchField extends StatelessWidget {
             const SizedBox(width: 10),
             Expanded(
               child: TextField(
+                controller: controller,
+                onChanged: onChanged,
                 decoration: InputDecoration.collapsed(
                   hintText: 'Search Food',
                   hintStyle: theme.textTheme.bodyMedium?.copyWith(
@@ -269,9 +301,14 @@ class _CategoryList extends StatelessWidget {
 }
 
 class _FoodCard extends StatelessWidget {
-  const _FoodCard({required this.food, required this.onTap});
+  const _FoodCard({
+    required this.food,
+    required this.onTap,
+    required this.showRatingBadge,
+  });
   final _FoodData food;
   final VoidCallback onTap;
+  final bool showRatingBadge;
 
   @override
   Widget build(BuildContext context) {
@@ -305,34 +342,35 @@ class _FoodCard extends StatelessWidget {
                         ColoredBox(color: Colors.orange.shade100),
                   ),
                 ),
-                Positioned(
-                  top: 0,
-                  right: 0,
-                  child: Container(
-                    height: 24,
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    decoration: const BoxDecoration(
-                      color: Color(0xCC171414),
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(6),
+                if (showRatingBadge)
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: Container(
+                      height: 24,
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      decoration: const BoxDecoration(
+                        color: Color(0xCC171414),
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(6),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(Icons.star, color: Colors.white, size: 14),
+                          const SizedBox(width: 3),
+                          Text(
+                            food.rating,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(Icons.star, color: Colors.white, size: 14),
-                        const SizedBox(width: 3),
-                        Text(
-                          food.rating,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ],
-                    ),
                   ),
-                ),
               ],
             ),
             Expanded(
@@ -348,7 +386,29 @@ class _FoodCard extends StatelessWidget {
                       style: Theme.of(context).textTheme.titleMedium
                           ?.copyWith(fontSize: 16),
                     ),
-                    const SizedBox(height: 8),
+                    if (!showRatingBadge) ...[
+                      const SizedBox(height: 4),
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.star,
+                            color: Color(0xFFFFC107),
+                            size: 20,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            food.rating,
+                            style: const TextStyle(
+                              color: Color(0xFFB3B3B3),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 4),
+                    ] else
+                      const SizedBox(height: 8),
                     Text(
                       food.price,
                       style: Theme.of(context).textTheme.bodyMedium
