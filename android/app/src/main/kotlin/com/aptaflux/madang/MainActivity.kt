@@ -1,4 +1,4 @@
-package com.example.madang
+package com.aptaflux.madang
 
 import io.flutter.embedding.android.FlutterActivity
 
