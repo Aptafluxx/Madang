@@ -94,6 +94,32 @@ void main() {
     expect(find.text('Work Table'), findsOneWidget);
     expect(find.text('Family Table'), findsWidgets);
   });
+
+  testWidgets('table card opens booking bottom sheet', (tester) async {
+    await tester.binding.setSurfaceSize(const Size(411, 823));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(
+      MaterialApp(home: TableScreen(onBack: _unusedBack)),
+    );
+
+    await tester.tap(find.text('Work Table'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Time'), findsOneWidget);
+    expect(find.text('30 minutes'), findsOneWidget);
+    expect(find.text('Additional'), findsOneWidget);
+    expect(find.text('Flower'), findsOneWidget);
+
+    await tester.tap(find.text('45 minutes'));
+    await tester.pump();
+    await tester.tap(find.text('Booking table'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Time'), findsNothing);
+    expect(find.text('Successfuly booking table'), findsOneWidget);
+    expect(find.text('Cart'), findsOneWidget);
+  });
 }
 
 void _unusedBack() {}

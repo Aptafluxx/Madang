@@ -230,7 +230,10 @@ class _TableScreenState extends State<TableScreen> {
                           separatorBuilder: (_, _) =>
                               const SizedBox(height: 24),
                           itemBuilder: (context, index) {
-                            return _TableCard(table: _filteredTables[index]);
+                            return _TableCard(
+                              table: _filteredTables[index],
+                              onTap: () => _showBookingSheet(context),
+                            );
                           },
                         ),
                 ),
@@ -239,6 +242,16 @@ class _TableScreenState extends State<TableScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Future<void> _showBookingSheet(BuildContext context) {
+    return showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      barrierColor: const Color(0x4D000000),
+      backgroundColor: Colors.transparent,
+      builder: (_) => const _TableBookingSheet(),
     );
   }
 }
@@ -297,60 +310,442 @@ class _TableEmptyResult extends StatelessWidget {
 }
 
 class _TableCard extends StatelessWidget {
-  const _TableCard({required this.table});
+  const _TableCard({required this.table, required this.onTap});
 
   final _TableData table;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
+    return InkWell(
+      onTap: onTap,
       borderRadius: BorderRadius.circular(8),
-      child: AspectRatio(
-        aspectRatio: 371 / 240,
-        child: Stack(
-          fit: StackFit.expand,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: AspectRatio(
+          aspectRatio: 371 / 240,
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              Image.asset(table.image, fit: BoxFit.cover),
+              const DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [Colors.transparent, Color(0x66000000)],
+                  ),
+                ),
+              ),
+              Positioned(
+                left: 16,
+                right: 16,
+                bottom: 14,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      table.title,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600,
+                        height: 1.2,
+                        letterSpacing: 0.048,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      table.description,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        height: 1.3,
+                        letterSpacing: 0.032,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _TableBookingSheet extends StatefulWidget {
+  const _TableBookingSheet();
+
+  @override
+  State<_TableBookingSheet> createState() => _TableBookingSheetState();
+}
+
+class _TableBookingSheetState extends State<_TableBookingSheet> {
+  static const _durations = ['30 minutes', '45 minutes', '1 hour', '2 hour'];
+
+  String _selectedDuration = '30 minutes';
+  final TextEditingController _customTimeController = TextEditingController(
+    text: '10 minutes',
+  );
+  bool _customTimeVisible = false;
+  final Set<String> _selectedAdditions = {'Flower'};
+  int _flowerQuantity = 1;
+
+  @override
+  void dispose() {
+    _customTimeController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.sizeOf(context).height;
+    final sheetHeight = screenHeight < 738 ? screenHeight : 738.0;
+
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: Container(
+        width: 411,
+        height: sheetHeight,
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset(table.image, fit: BoxFit.cover),
-            const DecoratedBox(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Colors.transparent, Color(0x66000000)],
+            const SizedBox(height: 16),
+            Center(
+              child: Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFB3B3B3),
+                  borderRadius: BorderRadius.circular(4),
                 ),
               ),
             ),
-            Positioned(
-              left: 16,
-              right: 16,
-              bottom: 14,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    table.title,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600,
-                      height: 1.2,
-                      letterSpacing: 0.048,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    table.description,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      height: 1.3,
-                      letterSpacing: 0.032,
-                    ),
-                  ),
-                ],
+            const SizedBox(height: 20),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Text(
+                'Time',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  height: 1.2,
+                ),
               ),
             ),
+            const SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(children: _durations.map(_buildDuration).toList()),
+              ),
+            ),
+            const SizedBox(height: 8),
+            if (_customTimeVisible)
+              _buildCustomTime()
+            else
+              Center(
+                child: TextButton(
+                  onPressed: () => setState(() {
+                    _customTimeVisible = true;
+                    _selectedDuration = _customTimeController.text.trim();
+                  }),
+                  child: const Text(
+                    'custom time',
+                    style: TextStyle(
+                      color: Color(0xFF008C8C),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ),
+            const SizedBox(height: 12),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Text(
+                'Additional',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  height: 1.2,
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            _buildAddition('Chair', 'Free'),
+            _buildAddition('Table', 'Free'),
+            _buildAddition('Flower', 'Rp.25.000'),
+            const Spacer(),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+              child: SizedBox(
+                width: double.infinity,
+                height: 48,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        behavior: SnackBarBehavior.floating,
+                        margin: const EdgeInsets.fromLTRB(20, 0, 20, 41),
+                        padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+                        backgroundColor: const Color(0xFF49516F),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        duration: const Duration(seconds: 4),
+                        content: Row(
+                          children: [
+                            const Expanded(
+                              child: Text(
+                                'Successfuly booking table',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  height: 1.6,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: const Text(
+                                'Cart',
+                                style: TextStyle(
+                                  color: Color(0xFF008C8C),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  height: 1.3,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF008C8C),
+                    foregroundColor: Colors.white,
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                  ),
+                  child: const Text(
+                    'Booking table',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDuration(String duration) {
+    final selected = _selectedDuration == duration;
+    return Padding(
+      padding: const EdgeInsets.only(right: 16),
+      child: InkWell(
+        onTap: () => setState(() {
+          _selectedDuration = duration;
+          _customTimeVisible = false;
+        }),
+        borderRadius: BorderRadius.circular(20),
+        child: Container(
+          height: 32,
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          decoration: BoxDecoration(
+            color: selected ? const Color(0xFF008C8C) : const Color(0xFFF3F1F1),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                duration,
+                style: TextStyle(
+                  color: selected ? Colors.white : Colors.black,
+                  fontSize: 14,
+                  height: 1.6,
+                ),
+              ),
+              if (selected) ...[
+                const SizedBox(width: 4),
+                SvgPicture.asset(
+                  'assets/figma/table_booking_close.svg',
+                  width: 12,
+                  height: 12,
+                ),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCustomTime() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 11),
+            child: SvgPicture.asset(
+              'assets/figma/table_booking_radio.svg',
+              width: 24,
+              height: 24,
+            ),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextField(
+                  controller: _customTimeController,
+                  onChanged: (value) => setState(() {
+                    _selectedDuration = value.trim();
+                  }),
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    height: 1.6,
+                  ),
+                  decoration: InputDecoration(
+                    isDense: true,
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 10,
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(6),
+                      borderSide: const BorderSide(color: Color(0xFFB3B3B3)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(6),
+                      borderSide: const BorderSide(color: Color(0xFF008C8C)),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 4),
+                const Text(
+                  'example: 10 minutes, 1 hour',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 10,
+                    height: 1.6,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAddition(String name, String price) {
+    final selected = _selectedAdditions.contains(name);
+    final isFlower = name == 'Flower';
+    return InkWell(
+      onTap: () {
+        setState(() {
+          if (selected) {
+            _selectedAdditions.remove(name);
+          } else {
+            _selectedAdditions.add(name);
+          }
+        });
+      },
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                SvgPicture.asset(
+                  'assets/figma/table_booking_checkbox.svg',
+                  width: 24,
+                  height: 24,
+                  colorFilter: selected
+                      ? const ColorFilter.mode(
+                          Color(0xFF008C8C),
+                          BlendMode.srcIn,
+                        )
+                      : null,
+                ),
+                const SizedBox(width: 8),
+                Text(name, style: const TextStyle(fontSize: 16)),
+                const Spacer(),
+                Text(
+                  price,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+            if (isFlower && selected) ...[
+              const SizedBox(height: 12),
+              Align(
+                alignment: Alignment.centerRight,
+                child: SizedBox(
+                  width: 91,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                        onTap: () => setState(() {
+                          if (_flowerQuantity > 1) _flowerQuantity--;
+                        }),
+                        child: SvgPicture.asset(
+                          'assets/figma/table_booking_remove_circle.svg',
+                          width: 24,
+                          height: 24,
+                        ),
+                      ),
+                      Text(
+                        '$_flowerQuantity',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () => setState(() => _flowerQuantity++),
+                        child: SvgPicture.asset(
+                          'assets/figma/table_booking_add_circle.svg',
+                          width: 24,
+                          height: 24,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ],
         ),
       ),
