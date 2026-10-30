@@ -3,6 +3,7 @@ import 'package:madang/presentation/screens/home/home_screen.dart';
 import 'package:madang/presentation/screens/search/search_screen.dart';
 import 'package:madang/presentation/screens/profile/profile_screen.dart';
 import 'package:madang/presentation/screens/food/food_screen.dart';
+import 'package:madang/presentation/screens/table/table_screen.dart';
 
 class AppShell extends StatefulWidget {
   const AppShell({super.key});
@@ -20,6 +21,8 @@ class _AppShellState extends State<AppShell> {
     }
   }
 
+  void _openTable() => setState(() => selectedIndex = 2);
+
   @override
   Widget build(BuildContext context) {
     switch (selectedIndex) {
@@ -29,10 +32,13 @@ class _AppShellState extends State<AppShell> {
         return ProfileScreen(onNavigationTap: _onNavigationTap);
       case 4:
         return FoodScreen(onBack: () => setState(() => selectedIndex = 0));
+      case 2:
+        return TableScreen(onBack: () => setState(() => selectedIndex = 0));
       default:
         return HomeScreen(
           onNavigationTap: _onNavigationTap,
           onFoodTap: () => setState(() => selectedIndex = 4),
+          onTableTap: _openTable,
         );
     }
   }

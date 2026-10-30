@@ -9,10 +9,12 @@ class HomeScreen extends StatelessWidget {
     super.key,
     required this.onNavigationTap,
     required this.onFoodTap,
+    required this.onTableTap,
   });
 
   final ValueChanged<int> onNavigationTap;
   final VoidCallback onFoodTap;
+  final VoidCallback onTableTap;
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +72,7 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(height: 20),
                   const PromoBanner(),
                   const SizedBox(height: 20),
-                  MenuGrid(onFoodTap: onFoodTap),
+                  MenuGrid(onFoodTap: onFoodTap, onTableTap: onTableTap),
                   const SizedBox(height: 24),
                   Align(
                     alignment: Alignment.centerLeft,

@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:madang/presentation/screens/home/widgets/menu_tile.dart';
 
 class MenuGrid extends StatelessWidget {
-  const MenuGrid({super.key, required this.onFoodTap});
+  const MenuGrid({
+    super.key,
+    required this.onFoodTap,
+    required this.onTableTap,
+  });
 
   final VoidCallback onFoodTap;
+  final VoidCallback onTableTap;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +30,11 @@ class MenuGrid extends StatelessWidget {
               icon: item.icon,
               label: item.label,
               active: item.active,
-              onTap: item.label == 'Food' ? onFoodTap : null,
+              onTap: switch (item.label) {
+                'Food' => onFoodTap,
+                'Table' => onTableTap,
+                _ => null,
+              },
             ),
           );
         }),
