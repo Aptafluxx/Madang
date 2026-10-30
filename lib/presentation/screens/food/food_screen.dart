@@ -15,7 +15,7 @@ class _FoodScreenState extends State<FoodScreen> {
   bool showFoodDetails = false;
   bool showOrderConfirmation = false;
   bool hasPlacedOrder = false;
-  String searchQuery = 'Pizza';
+  String searchQuery = '';
   late final TextEditingController searchController;
 
   final categories = const [
@@ -62,7 +62,7 @@ class _FoodScreenState extends State<FoodScreen> {
     }).toList();
 
     return Scaffold(
-      backgroundColor: theme.scaffoldBackgroundColor,
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Stack(
           children: [
@@ -295,7 +295,7 @@ class _SearchField extends StatelessWidget {
                 controller: controller,
                 onChanged: onChanged,
                 decoration: InputDecoration.collapsed(
-                  hintText: 'Search Food',
+                  hintText: 'Search food',
                   hintStyle: theme.textTheme.bodyMedium?.copyWith(
                     color: const Color(0xFFA6A6A6),
                   ),
@@ -390,7 +390,7 @@ class _FoodCard extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(6),
           boxShadow: const [
             BoxShadow(
               color: Color(0x14000000),

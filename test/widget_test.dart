@@ -22,10 +22,9 @@ void main() {
   ) async {
     await tester.pumpWidget(MaterialApp(home: FoodScreen(onBack: _unusedBack)));
 
-    expect(
-      find.text('Well, there is no food you are\nlooking for :('),
-      findsOneWidget,
-    );
+    expect(find.text('Meatball Sweatie'), findsOneWidget);
+    expect(find.text('Noodle Ex'), findsOneWidget);
+    expect(find.text('Burger Ala Ala'), findsOneWidget);
 
     await tester.enterText(find.byType(EditableText), 'Meat');
     await tester.pumpAndSettle();
