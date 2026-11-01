@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:madang/presentation/screens/home/widgets/navigation/bottom_navigation.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key, required this.onNavigationTap});
+  const ProfileScreen({
+    super.key,
+    required this.onNavigationTap,
+    this.onCartTap,
+  });
 
   final ValueChanged<int> onNavigationTap;
+  final VoidCallback? onCartTap;
 
   @override
   Widget build(BuildContext context) {
@@ -91,9 +96,10 @@ class ProfileScreen extends StatelessWidget {
                             icon: Icons.credit_card,
                             label: 'Payment Method',
                           ),
-                          const ProfileMenuItem(
+                          ProfileMenuItem(
                             icon: Icons.shopping_cart_outlined,
                             label: 'My Cart',
+                            onTap: onCartTap,
                           ),
                           const ProfileMenuItem(
                             icon: Icons.help_outline,
@@ -175,32 +181,45 @@ class _SectionTitle extends StatelessWidget {
 }
 
 class ProfileMenuItem extends StatelessWidget {
-  const ProfileMenuItem({super.key, required this.icon, required this.label});
+  const ProfileMenuItem({
+    super.key,
+    required this.icon,
+    required this.label,
+    this.onTap,
+  });
 
   final IconData icon;
   final String label;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
-          height: 56,
-          child: Row(
-            children: [
-              Icon(icon, size: 24, color: const Color(0xFF6D6D6D)),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Text(
-                  label,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
+        InkWell(
+          onTap: onTap,
+          child: SizedBox(
+            height: 56,
+            child: Row(
+              children: [
+                Icon(icon, size: 24, color: const Color(0xFF6D6D6D)),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Text(
+                    label,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
-              ),
-              const Icon(Icons.chevron_right, size: 20, color: Colors.black54),
-            ],
+                const Icon(
+                  Icons.chevron_right,
+                  size: 20,
+                  color: Colors.black54,
+                ),
+              ],
+            ),
           ),
         ),
         const Divider(

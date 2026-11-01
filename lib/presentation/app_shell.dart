@@ -4,6 +4,7 @@ import 'package:madang/presentation/screens/search/search_screen.dart';
 import 'package:madang/presentation/screens/profile/profile_screen.dart';
 import 'package:madang/presentation/screens/food/food_screen.dart';
 import 'package:madang/presentation/screens/table/table_screen.dart';
+import 'package:madang/presentation/screens/cart/cart_screen.dart';
 
 class AppShell extends StatefulWidget {
   const AppShell({super.key});
@@ -22,6 +23,7 @@ class _AppShellState extends State<AppShell> {
   }
 
   void _openTable() => setState(() => selectedIndex = 2);
+  void _openCart() => setState(() => selectedIndex = 5);
 
   @override
   Widget build(BuildContext context) {
@@ -29,16 +31,28 @@ class _AppShellState extends State<AppShell> {
       case 1:
         return SearchScreen(onNavigationTap: _onNavigationTap);
       case 3:
-        return ProfileScreen(onNavigationTap: _onNavigationTap);
+        return ProfileScreen(
+          onNavigationTap: _onNavigationTap,
+          onCartTap: _openCart,
+        );
       case 4:
-        return FoodScreen(onBack: () => setState(() => selectedIndex = 0));
+        return FoodScreen(
+          onBack: () => setState(() => selectedIndex = 0),
+          onCartTap: _openCart,
+        );
       case 2:
-        return TableScreen(onBack: () => setState(() => selectedIndex = 0));
+        return TableScreen(
+          onBack: () => setState(() => selectedIndex = 0),
+          onCartTap: _openCart,
+        );
+      case 5:
+        return CartScreen(onBack: () => setState(() => selectedIndex = 0));
       default:
         return HomeScreen(
           onNavigationTap: _onNavigationTap,
           onFoodTap: () => setState(() => selectedIndex = 4),
           onTableTap: _openTable,
+          onCartTap: _openCart,
         );
     }
   }

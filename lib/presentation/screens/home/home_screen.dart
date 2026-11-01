@@ -10,11 +10,13 @@ class HomeScreen extends StatelessWidget {
     required this.onNavigationTap,
     required this.onFoodTap,
     required this.onTableTap,
+    this.onCartTap,
   });
 
   final ValueChanged<int> onNavigationTap;
   final VoidCallback onFoodTap;
   final VoidCallback onTableTap;
+  final VoidCallback? onCartTap;
 
   @override
   Widget build(BuildContext context) {
@@ -58,12 +60,16 @@ class HomeScreen extends StatelessWidget {
                             ],
                           ),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 6),
-                          child: Icon(
-                            Icons.shopping_bag_outlined,
-                            size: 28,
-                            color: Colors.black,
+                        Padding(
+                          padding: const EdgeInsets.only(top: 6),
+                          child: IconButton(
+                            onPressed: onCartTap,
+                            padding: EdgeInsets.zero,
+                            icon: const Icon(
+                              Icons.shopping_bag_outlined,
+                              size: 28,
+                              color: Colors.black,
+                            ),
                           ),
                         ),
                       ],

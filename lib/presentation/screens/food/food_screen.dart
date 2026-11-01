@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class FoodScreen extends StatefulWidget {
-  const FoodScreen({super.key, required this.onBack});
+  const FoodScreen({super.key, required this.onBack, this.onCartTap});
 
   final VoidCallback onBack;
+  final VoidCallback? onCartTap;
 
   @override
   State<FoodScreen> createState() => _FoodScreenState();
@@ -75,6 +76,7 @@ class _FoodScreenState extends State<FoodScreen> {
                       key: const ValueKey('food-header'),
                       child: _FoodHeader(
                         onBack: widget.onBack,
+                        onCartTap: widget.onCartTap,
                         showCartBadge: hasPlacedOrder,
                       ),
                     ),
@@ -210,8 +212,13 @@ class _EmptyFoodResult extends StatelessWidget {
 }
 
 class _FoodHeader extends StatelessWidget {
-  const _FoodHeader({required this.onBack, required this.showCartBadge});
+  const _FoodHeader({
+    required this.onBack,
+    required this.onCartTap,
+    required this.showCartBadge,
+  });
   final VoidCallback onBack;
+  final VoidCallback? onCartTap;
   final bool showCartBadge;
 
   @override
@@ -238,10 +245,14 @@ class _FoodHeader extends StatelessWidget {
           Stack(
             clipBehavior: Clip.none,
             children: [
-              const SizedBox(
-                width: 24,
-                height: 24,
-                child: Icon(Icons.shopping_cart_outlined, size: 24),
+              IconButton(
+                onPressed: onCartTap,
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints.tightFor(
+                  width: 24,
+                  height: 24,
+                ),
+                icon: const Icon(Icons.shopping_cart_outlined, size: 24),
               ),
               if (showCartBadge)
                 Positioned(

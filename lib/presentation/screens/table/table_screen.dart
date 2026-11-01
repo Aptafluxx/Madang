@@ -2,9 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class TableScreen extends StatefulWidget {
-  const TableScreen({super.key, required this.onBack, this.initialQuery = ''});
+  const TableScreen({
+    super.key,
+    required this.onBack,
+    this.onCartTap,
+    this.initialQuery = '',
+  });
 
   final VoidCallback onBack;
+  final VoidCallback? onCartTap;
   final String initialQuery;
 
   @override
@@ -134,10 +140,14 @@ class _TableScreenState extends State<TableScreen> {
                       Semantics(
                         button: true,
                         label: 'Cart',
-                        child: SvgPicture.asset(
-                          'assets/figma/table_cart.svg',
-                          width: 24,
-                          height: 24,
+                        child: IconButton(
+                          onPressed: widget.onCartTap,
+                          padding: EdgeInsets.zero,
+                          icon: SvgPicture.asset(
+                            'assets/figma/table_cart.svg',
+                            width: 24,
+                            height: 24,
+                          ),
                         ),
                       ),
                     ],
@@ -251,7 +261,7 @@ class _TableScreenState extends State<TableScreen> {
       isScrollControlled: true,
       barrierColor: const Color(0x4D000000),
       backgroundColor: Colors.transparent,
-      builder: (_) => const _TableBookingSheet(),
+      builder: (_) => _TableBookingSheet(onCartTap: widget.onCartTap),
     );
   }
 }
@@ -377,7 +387,9 @@ class _TableCard extends StatelessWidget {
 }
 
 class _TableBookingSheet extends StatefulWidget {
-  const _TableBookingSheet();
+  const _TableBookingSheet({this.onCartTap});
+
+  final VoidCallback? onCartTap;
 
   @override
   State<_TableBookingSheet> createState() => _TableBookingSheetState();
@@ -524,13 +536,16 @@ class _TableBookingSheetState extends State<_TableBookingSheet> {
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(6),
                               ),
-                              child: const Text(
-                                'Cart',
-                                style: TextStyle(
-                                  color: Color(0xFF008C8C),
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                  height: 1.3,
+                              child: GestureDetector(
+                                onTap: widget.onCartTap,
+                                child: const Text(
+                                  'Cart',
+                                  style: TextStyle(
+                                    color: Color(0xFF008C8C),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    height: 1.3,
+                                  ),
                                 ),
                               ),
                             ),
