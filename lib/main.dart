@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:madang/app/theme/app_theme.dart';
 import 'package:madang/presentation/app_shell.dart';
-import 'package:madang/theme/app_theme.dart';
 
 void main() {
   runApp(const MadangApp());
