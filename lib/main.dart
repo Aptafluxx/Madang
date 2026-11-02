@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:madang/app/routes/app_pages.dart';
+import 'package:madang/app/routes/app_routes.dart';
 import 'package:madang/app/theme/app_theme.dart';
-import 'package:madang/presentation/app_shell.dart';
+import 'package:madang/core/services/preferences_service.dart';
 
-void main() {
+void main() async {
+  await Get.putAsync(() => PreferencesService().init());
   runApp(const MadangApp());
 }
 
@@ -11,11 +15,12 @@ class MadangApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Madang Restaurant',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
-      home: const AppShell(),
+      initialRoute: AppRoutes.splash,
+      getPages: AppPages.pages,
     );
   }
 }
