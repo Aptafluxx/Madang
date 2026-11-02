@@ -189,10 +189,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(
-          widget.label!,
-          style: AppTextStyles.body2.copyWith(fontWeight: FontWeight.w500),
-        ),
+        Text(widget.label!, style: AppTextStyles.body1),
         const SizedBox(height: 8),
         field,
       ],

@@ -1,9 +1,8 @@
 import 'package:get/get.dart';
 import 'package:madang/app/routes/app_routes.dart';
-import 'package:madang/core/services/preferences_service.dart';
 
 class SplashController extends GetxController {
-  final PreferencesService _prefs = Get.find<PreferencesService>();
+  // final PreferencesService _prefs = Get.find<PreferencesService>();
 
   @override
   void onInit() {

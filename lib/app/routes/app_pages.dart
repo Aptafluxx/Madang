@@ -1,5 +1,9 @@
 import 'package:get/get.dart';
 import 'package:madang/app/routes/app_routes.dart';
+import 'package:madang/features/auth/presentation/controller/login_binding.dart';
+import 'package:madang/features/auth/presentation/controller/signup_binding.dart';
+import 'package:madang/features/auth/presentation/login_screen.dart';
+import 'package:madang/features/auth/presentation/signup_screen.dart';
 import 'package:madang/features/onboarding/controller/onboarding_binding.dart';
 import 'package:madang/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:madang/features/splash/controller/splash_binding.dart';
@@ -18,6 +22,18 @@ class AppPages {
       page: () => const OnboardingScreen(),
       binding: OnboardingBinding(),
       transition: .leftToRight,
+    ),
+    GetPage(
+      name: AppRoutes.signup,
+      page: () => const SignupScreen(),
+      binding: SignupBinding(),
+      transition: .rightToLeft,
+    ),
+    GetPage(
+      name: AppRoutes.login,
+      page: () => const LoginScreen(),
+      binding: LoginBinding(),
+      transition: .rightToLeft,
     ),
   ];
 }

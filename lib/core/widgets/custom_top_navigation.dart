@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../app/theme/app_colors.dart';
 import '../../app/theme/app_text_theme.dart';
 
@@ -68,9 +69,7 @@ class CustomTopNavigation extends StatelessWidget
         title,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
-        style:
-            titleStyle ??
-            AppTextStyles.subtitle2.copyWith(color: AppColors.textPrimary),
+        style: titleStyle ?? AppTextStyles.title2,
       ),
       actions: [
         ...?actions,
