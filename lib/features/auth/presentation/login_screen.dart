@@ -42,6 +42,15 @@ class LoginScreen extends GetView<LoginController> {
                     textInputAction: .next,
                     keyboardType: .emailAddress,
                     controller: controller.emailController,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) {
+                      final email = value?.trim() ?? '';
+                      if (email.isEmpty) return 'Email is required';
+                      if (!GetUtils.isEmail(email)) {
+                        return 'Enter a valid email address';
+                      }
+                      return null;
+                    },
                   ),
                   const SizedBox(height: 20),
                   CustomTextField(
@@ -50,6 +59,11 @@ class LoginScreen extends GetView<LoginController> {
                     isPassword: true,
                     keyboardType: .visiblePassword,
                     controller: controller.passwordController,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) {
+                      if ((value ?? '').isEmpty) return 'Password is required';
+                      return null;
+                    },
                   ),
                   const SizedBox(height: 40),
                   CustomButton(

@@ -42,6 +42,13 @@ class SignupScreen extends GetView<SignupController> {
                     textInputAction: .next,
                     keyboardType: .name,
                     controller: controller.nameController,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) {
+                      if ((value ?? '').trim().isEmpty) {
+                        return 'Name is required';
+                      }
+                      return null;
+                    },
                   ),
                   const SizedBox(height: 20),
                   CustomTextField(
@@ -50,6 +57,15 @@ class SignupScreen extends GetView<SignupController> {
                     textInputAction: .next,
                     keyboardType: .emailAddress,
                     controller: controller.emailController,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) {
+                      final email = value?.trim() ?? '';
+                      if (email.isEmpty) return 'Email is required';
+                      if (!GetUtils.isEmail(email)) {
+                        return 'Enter a valid email address';
+                      }
+                      return null;
+                    },
                   ),
                   const SizedBox(height: 20),
                   CustomTextField(
@@ -58,6 +74,15 @@ class SignupScreen extends GetView<SignupController> {
                     isPassword: true,
                     keyboardType: .visiblePassword,
                     controller: controller.passwordController,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) {
+                      final password = value ?? '';
+                      if (password.isEmpty) return 'Password is required';
+                      if (password.length < 6) {
+                        return 'Password must be at least 6 characters';
+                      }
+                      return null;
+                    },
                   ),
                   const SizedBox(height: 40),
                   CustomButton(
