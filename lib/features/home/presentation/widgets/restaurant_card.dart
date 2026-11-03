@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:madang/app/theme/app_colors.dart';
 import 'package:madang/app/theme/app_text_theme.dart';
+import 'package:madang/core/widgets/shimmer_box.dart';
 
 class RestaurantCard extends StatelessWidget {
   const RestaurantCard({
@@ -49,11 +51,18 @@ class RestaurantCard extends StatelessWidget {
                   child: SizedBox(
                     height: 180,
                     width: 160,
-                    child: Image.network(
-                      imageUrl,
+                    child: CachedNetworkImage(
+                      imageUrl: imageUrl,
                       fit: BoxFit.cover,
-                      errorBuilder: (_, _, _) =>
-                          Container(color: Colors.orange.shade200),
+                      memCacheWidth: 400,
+                      placeholder: (_, _) => const ShimmerBox(),
+                      errorWidget: (_, _, _) => Container(
+                        color: AppColors.chipBackground,
+                        child: const Icon(
+                          Icons.restaurant,
+                          color: AppColors.gray,
+                        ),
+                      ),
                     ),
                   ),
                 ),

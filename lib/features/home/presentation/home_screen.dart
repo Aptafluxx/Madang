@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:madang/app/theme/app_colors.dart';
 import 'package:madang/app/theme/app_text_theme.dart';
-import 'package:madang/features/home/controller/home_controller.dart';
+import 'package:madang/features/home/data/controller/home_controller.dart';
 import 'package:madang/features/home/presentation/widgets/menu_grid.dart';
 import 'package:madang/features/home/presentation/widgets/promo_banner.dart';
 import 'package:madang/features/home/presentation/widgets/recommendation_list.dart';

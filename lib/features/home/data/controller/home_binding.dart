@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:madang/features/home/controller/home_controller.dart';
+import 'package:madang/features/home/data/controller/home_controller.dart';
 
 class HomeBinding extends Bindings {
   @override
