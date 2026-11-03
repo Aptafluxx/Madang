@@ -35,7 +35,14 @@ class LoginScreen extends GetView<LoginController> {
               child: Column(
                 crossAxisAlignment: .center,
                 children: [
-                  const SizedBox(height: 100),
+                  const SizedBox(height: 25),
+                  Text(
+                    "Madang",
+                    style: AppTextStyles.heading2.copyWith(
+                      color: AppColors.primary,
+                    ),
+                  ),
+                  const SizedBox(height: 50),
                   CustomTextField(
                     hintText: "Email",
                     label: "Email",
@@ -90,7 +97,7 @@ class LoginScreen extends GetView<LoginController> {
                             color: AppColors.primary30,
                           ),
                           recognizer: TapGestureRecognizer()
-                              ..onTap = () => Get.offAllNamed(AppRoutes.signup),
+                            ..onTap = () => Get.offAllNamed(AppRoutes.signup),
                         ),
                       ],
                     ),

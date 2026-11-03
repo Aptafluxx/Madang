@@ -35,7 +35,14 @@ class SignupScreen extends GetView<SignupController> {
               child: Column(
                 crossAxisAlignment: .center,
                 children: [
-                  const SizedBox(height: 100),
+                  const SizedBox(height: 25),
+                  Text(
+                    "Madang",
+                    style: AppTextStyles.heading2.copyWith(
+                      color: AppColors.primary,
+                    ),
+                  ),
+                  const SizedBox(height: 50),
                   CustomTextField(
                     hintText: "Name",
                     label: "Name",
