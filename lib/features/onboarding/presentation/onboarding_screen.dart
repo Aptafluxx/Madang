@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:madang/app/routes/app_routes.dart';
 import 'package:madang/app/theme/app_colors.dart';
 import 'package:madang/app/theme/app_text_theme.dart';
 import 'package:madang/core/widgets/custom_button.dart';
@@ -30,17 +29,13 @@ class OnboardingScreen extends GetView<OnboardingController> {
             const SizedBox(height: 80),
             CustomButton(
               label: "Sign Up",
-              onPressed: () {
-                Get.offAllNamed(AppRoutes.signup);
-              },
+              onPressed: controller.goToSignup,
             ),
             const SizedBox(height: 25),
             CustomButton(
               label: "Login",
               variant: CustomButtonVariant.outlined,
-              onPressed: () {
-                Get.offAllNamed(AppRoutes.login);
-              },
+              onPressed: controller.goToLogin,
             ),
           ],
         ),
