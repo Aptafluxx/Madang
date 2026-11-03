@@ -86,7 +86,7 @@ class LoginScreen extends GetView<LoginController> {
                             color: AppColors.primary30,
                           ),
                           recognizer: TapGestureRecognizer()
-                            ..onTap = () => Get.toNamed(AppRoutes.signup),
+                              ..onTap = () => Get.offAllNamed(AppRoutes.signup),
                         ),
                       ],
                     ),

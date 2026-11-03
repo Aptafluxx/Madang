@@ -101,7 +101,7 @@ class SignupScreen extends GetView<SignupController> {
                         TextSpan(
                           text: "Login",
                           recognizer: TapGestureRecognizer()
-                            ..onTap = () => Get.toNamed(AppRoutes.login),
+                            ..onTap = () => Get.offAllNamed(AppRoutes.login),
                           style: AppTextStyles.subtitle2.copyWith(
                             decoration: .underline,
                             color: AppColors.primary30,
