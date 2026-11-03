@@ -4,6 +4,8 @@ import 'package:madang/features/auth/presentation/controller/login_binding.dart'
 import 'package:madang/features/auth/presentation/controller/signup_binding.dart';
 import 'package:madang/features/auth/presentation/login_screen.dart';
 import 'package:madang/features/auth/presentation/signup_screen.dart';
+import 'package:madang/features/home/controller/home_binding.dart';
+import 'package:madang/features/home/presentation/home_screen.dart';
 import 'package:madang/features/onboarding/controller/onboarding_binding.dart';
 import 'package:madang/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:madang/features/splash/controller/splash_binding.dart';
@@ -33,6 +35,12 @@ class AppPages {
       name: AppRoutes.login,
       page: () => const LoginScreen(),
       binding: LoginBinding(),
+      transition: .rightToLeft,
+    ),
+    GetPage(
+      name: AppRoutes.home,
+      page: () => const HomeScreen(),
+      binding: HomeBinding(),
       transition: .rightToLeft,
     ),
   ];

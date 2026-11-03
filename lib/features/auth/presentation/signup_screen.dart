@@ -21,53 +21,63 @@ class SignupScreen extends GetView<SignupController> {
         body: SafeArea(
           child: SingleChildScrollView(
             padding: .symmetric(horizontal: 15, vertical: 10),
-            child: Column(
-              crossAxisAlignment: .center,
-              children: [
-                const SizedBox(height: 100),
-                CustomTextField(
-                  hintText: "Name",
-                  label: "Name",
-                  textInputAction: .next,
-                  keyboardType: .name,
-                ),
-                const SizedBox(height: 20),
-                CustomTextField(
-                  hintText: "Email",
-                  label: "Email",
-                  textInputAction: .next,
-                  keyboardType: .emailAddress,
-                ),
-                const SizedBox(height: 20),
-                CustomTextField(
-                  hintText: "Password",
-                  label: "Password",
-                  isPassword: true,
-                  keyboardType: .visiblePassword,
-                ),
-                const SizedBox(height: 40),
-                CustomButton(label: "Sign Up", onPressed: () {}),
-                const SizedBox(height: 25),
-                RichText(
-                  text: TextSpan(
-                    style: AppTextStyles.subtitle2.copyWith(
-                      color: AppColors.textPrimary,
-                    ),
-                    children: [
-                      const TextSpan(text: "Already have an account? "),
-                      TextSpan(
-                        text: "Login",
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () => Get.offAllNamed(AppRoutes.login),
-                        style: AppTextStyles.subtitle2.copyWith(
-                          decoration: .underline,
-                          color: AppColors.primary30,
-                        ),
-                      ),
-                    ],
+            child: Form(
+              key: controller.signupFormKey,
+              child: Column(
+                crossAxisAlignment: .center,
+                children: [
+                  const SizedBox(height: 100),
+                  CustomTextField(
+                    hintText: "Name",
+                    label: "Name",
+                    textInputAction: .next,
+                    keyboardType: .name,
+                    controller: controller.nameController,
                   ),
-                ),
-              ],
+                  const SizedBox(height: 20),
+                  CustomTextField(
+                    hintText: "Email",
+                    label: "Email",
+                    textInputAction: .next,
+                    keyboardType: .emailAddress,
+                    controller: controller.emailController,
+                  ),
+                  const SizedBox(height: 20),
+                  CustomTextField(
+                    hintText: "Password",
+                    label: "Password",
+                    isPassword: true,
+                    keyboardType: .visiblePassword,
+                    controller: controller.passwordController,
+                  ),
+                  const SizedBox(height: 40),
+                  CustomButton(
+                    label: "Sign Up",
+                    onPressed: controller.signup,
+                    isLoading: controller.isLoading.value,
+                  ),
+                  const SizedBox(height: 25),
+                  RichText(
+                    text: TextSpan(
+                      style: AppTextStyles.subtitle2.copyWith(
+                        color: AppColors.textPrimary,
+                      ),
+                      children: [
+                        const TextSpan(text: "Already have an account? "),
+                        TextSpan(
+                          text: "Login",
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () => Get.offAllNamed(AppRoutes.login),
+                          style: AppTextStyles.subtitle2.copyWith(
+                            decoration: .underline,
+                            color: AppColors.primary30,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

@@ -1,12 +1,16 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:madang/app/bindings/app_binding.dart';
 import 'package:madang/app/routes/app_pages.dart';
 import 'package:madang/app/routes/app_routes.dart';
 import 'package:madang/app/theme/app_theme.dart';
-import 'package:madang/core/services/preferences_service.dart';
+import 'package:madang/firebase_options.dart';
 
 void main() async {
-  await Get.putAsync(() => PreferencesService().init());
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await AppBinding.initialize();
   runApp(const MadangApp());
 }
 
