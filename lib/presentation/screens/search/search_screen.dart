@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:madang/presentation/screens/home/widgets/navigation/bottom_navigation.dart';
+import 'package:madang/features/home/presentation/widgets/bottom_navigation.dart';
 import 'package:madang/features/home/presentation/widgets/restaurant_card.dart';
 
 class SearchScreen extends StatefulWidget {

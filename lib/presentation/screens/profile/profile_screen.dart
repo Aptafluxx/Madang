@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:madang/presentation/screens/home/widgets/navigation/bottom_navigation.dart';
+import 'package:madang/features/home/presentation/widgets/bottom_navigation.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({

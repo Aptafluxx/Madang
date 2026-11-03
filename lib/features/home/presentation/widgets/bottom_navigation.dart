@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:madang/presentation/screens/home/widgets/navigation/bottom_nav_icon.dart';
+import 'package:madang/app/theme/app_colors.dart';
+import 'package:madang/features/home/presentation/widgets/bottom_nav_icon.dart';
 
 class BottomNavigation extends StatelessWidget {
   const BottomNavigation({super.key, this.selectedIndex = 0, this.onTap});
@@ -18,13 +19,12 @@ class BottomNavigation extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      margin: const EdgeInsets.only(top: 14),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-      decoration: const BoxDecoration(
-        color: Colors.white,
+      padding: const .symmetric(horizontal: 20, vertical: 12),
+      decoration: BoxDecoration(
+        color: AppColors.white,
         boxShadow: [
           BoxShadow(
-            color: Color(0x12000000),
+            color: AppColors.black.withValues(alpha: 0.1),
             offset: Offset(0, -8),
             blurRadius: 5,
           ),

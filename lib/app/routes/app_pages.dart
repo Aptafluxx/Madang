@@ -10,6 +10,9 @@ import 'package:madang/features/onboarding/controller/onboarding_binding.dart';
 import 'package:madang/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:madang/features/splash/controller/splash_binding.dart';
 import 'package:madang/features/splash/presentation/splash_screen.dart';
+import 'package:madang/features/recent/presentation/recent_screen.dart';
+import 'package:madang/presentation/screens/profile/profile_screen.dart';
+import 'package:madang/presentation/screens/search/search_screen.dart';
 
 class AppPages {
   static final List<GetPage> pages = [
@@ -41,7 +44,39 @@ class AppPages {
       name: AppRoutes.home,
       page: () => const HomeScreen(),
       binding: HomeBinding(),
-      transition: .rightToLeft,
+      transition: .noTransition
+    ),
+    GetPage(
+      name: AppRoutes.search,
+      page: () => SearchScreen(onNavigationTap: _onBottomNavigationTap),
+      transition: .noTransition
+    ),
+    GetPage(
+      name: AppRoutes.recent,
+      page: () => RecentScreen(onNavigationTap: _onBottomNavigationTap),
+      transition: .noTransition
+    ),
+    GetPage(
+      name: AppRoutes.profile,
+      page: () => ProfileScreen(onNavigationTap: _onBottomNavigationTap),
+      transition: .noTransition
     ),
   ];
+}
+
+void _onBottomNavigationTap(int index) {
+  switch (index) {
+    case 0:
+      Get.offAllNamed(AppRoutes.home);
+      break;
+    case 1:
+      Get.offAllNamed(AppRoutes.search);
+      break;
+    case 2:
+      Get.offAllNamed(AppRoutes.recent);
+      break;
+    case 3:
+      Get.offAllNamed(AppRoutes.profile);
+      break;
+  }
 }

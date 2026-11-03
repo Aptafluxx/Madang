@@ -50,6 +50,7 @@ class RecommendationList extends GetView<HomeController> {
           scrollDirection: Axis.horizontal,
           itemCount: tables.length,
           separatorBuilder: (_, _) => const SizedBox(width: 16),
+          clipBehavior: .none,
           itemBuilder: (_, index) {
             final table = tables[index];
             return RestaurantCard(
