@@ -66,10 +66,14 @@ class LoginScreen extends GetView<LoginController> {
                     },
                   ),
                   const SizedBox(height: 40),
-                  CustomButton(
-                    label: "Login",
-                    onPressed: controller.login,
-                    isLoading: controller.isLoading.value,
+                  Obx(
+                    () => CustomButton(
+                      label: "Login",
+                      onPressed: controller.canSubmit.value
+                          ? controller.login
+                          : null,
+                      isLoading: controller.isLoading.value,
+                    ),
                   ),
                   const SizedBox(height: 25),
                   RichText(

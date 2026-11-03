@@ -85,10 +85,14 @@ class SignupScreen extends GetView<SignupController> {
                     },
                   ),
                   const SizedBox(height: 40),
-                  CustomButton(
-                    label: "Sign Up",
-                    onPressed: controller.signup,
-                    isLoading: controller.isLoading.value,
+                  Obx(
+                    () => CustomButton(
+                      label: "Sign Up",
+                      onPressed: controller.canSubmit.value
+                          ? controller.signup
+                          : null,
+                      isLoading: controller.isLoading.value,
+                    ),
                   ),
                   const SizedBox(height: 25),
                   RichText(

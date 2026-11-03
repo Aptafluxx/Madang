@@ -13,6 +13,22 @@ class SignupController extends GetxController {
   final signupFormKey = GlobalKey<FormState>();
 
   final isLoading = false.obs;
+  final canSubmit = false.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    nameController.addListener(_updateSubmitState);
+    emailController.addListener(_updateSubmitState);
+    passwordController.addListener(_updateSubmitState);
+  }
+
+  void _updateSubmitState() {
+    canSubmit.value =
+        nameController.text.trim().isNotEmpty &&
+        GetUtils.isEmail(emailController.text.trim()) &&
+        passwordController.text.length >= 6;
+  }
 
   Future<void> signup() async {
     if (signupFormKey.currentState!.validate()) {
@@ -40,6 +56,9 @@ class SignupController extends GetxController {
 
   @override
   void onClose() {
+    nameController.removeListener(_updateSubmitState);
+    emailController.removeListener(_updateSubmitState);
+    passwordController.removeListener(_updateSubmitState);
     nameController.dispose();
     emailController.dispose();
     passwordController.dispose();

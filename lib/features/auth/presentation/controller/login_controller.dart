@@ -13,6 +13,20 @@ class LoginController extends GetxController {
   final forgotEmailController = TextEditingController();
 
   final isLoading = false.obs;
+  final canSubmit = false.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    emailController.addListener(_updateSubmitState);
+    passwordController.addListener(_updateSubmitState);
+  }
+
+  void _updateSubmitState() {
+    canSubmit.value =
+        GetUtils.isEmail(emailController.text.trim()) &&
+        passwordController.text.isNotEmpty;
+  }
 
   Future<void> login() async {
     if (loginFormKey.currentState!.validate()) {
@@ -68,6 +82,8 @@ class LoginController extends GetxController {
 
   @override
   void onClose() {
+    emailController.removeListener(_updateSubmitState);
+    passwordController.removeListener(_updateSubmitState);
     emailController.dispose();
     passwordController.dispose();
     forgotEmailController.dispose();
