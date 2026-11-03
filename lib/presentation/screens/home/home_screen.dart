@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:madang/presentation/screens/home/widgets/menu_grid.dart';
+import 'package:madang/features/home/presentation/widgets/menu_grid.dart';
 import 'package:madang/presentation/screens/home/widgets/navigation/bottom_navigation.dart';
-import 'package:madang/presentation/screens/home/widgets/promo_banner.dart';
-import 'package:madang/presentation/screens/home/widgets/recommendation_list.dart';
+import 'package:madang/features/home/presentation/widgets/promo_banner.dart';
+import 'package:madang/features/home/presentation/widgets/recommendation_list.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({

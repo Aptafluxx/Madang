@@ -48,6 +48,7 @@ flutter:
   assets:
     - assets/figma/
     - assets/images/
+    - assets/images/promo_banners/
 
   fonts:
     - family: Inter
