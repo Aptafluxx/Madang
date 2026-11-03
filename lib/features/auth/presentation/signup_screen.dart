@@ -17,7 +17,16 @@ class SignupScreen extends GetView<SignupController> {
     return GestureDetector(
       onTap: FocusScope.of(context).unfocus,
       child: Scaffold(
-        appBar: CustomTopNavigation(title: "Sign Up"),
+        appBar: CustomTopNavigation(
+          title: "Sign Up",
+          onBack: () {
+            if (Navigator.of(context).canPop()) {
+              Navigator.of(context).pop();
+            } else {
+              Get.offAllNamed(AppRoutes.onboarding);
+            }
+          },
+        ),
         body: SafeArea(
           child: SingleChildScrollView(
             padding: .symmetric(horizontal: 15, vertical: 10),
@@ -67,7 +76,7 @@ class SignupScreen extends GetView<SignupController> {
                         TextSpan(
                           text: "Login",
                           recognizer: TapGestureRecognizer()
-                            ..onTap = () => Get.offAllNamed(AppRoutes.login),
+                            ..onTap = () => Get.toNamed(AppRoutes.login),
                           style: AppTextStyles.subtitle2.copyWith(
                             decoration: .underline,
                             color: AppColors.primary30,

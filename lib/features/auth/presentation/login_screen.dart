@@ -17,7 +17,16 @@ class LoginScreen extends GetView<LoginController> {
     return GestureDetector(
       onTap: FocusScope.of(context).unfocus,
       child: Scaffold(
-        appBar: CustomTopNavigation(title: "Login"),
+        appBar: CustomTopNavigation(
+          title: "Login",
+          onBack: () {
+            if (Navigator.of(context).canPop()) {
+              Navigator.of(context).pop();
+            } else {
+              Get.offAllNamed(AppRoutes.onboarding);
+            }
+          },
+        ),
         body: SafeArea(
           child: SingleChildScrollView(
             padding: .symmetric(horizontal: 15, vertical: 10),
@@ -63,7 +72,7 @@ class LoginScreen extends GetView<LoginController> {
                             color: AppColors.primary30,
                           ),
                           recognizer: TapGestureRecognizer()
-                            ..onTap = () => Get.offAllNamed(AppRoutes.signup),
+                            ..onTap = () => Get.toNamed(AppRoutes.signup),
                         ),
                       ],
                     ),
