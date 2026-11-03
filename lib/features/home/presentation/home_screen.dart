@@ -73,6 +73,7 @@ class HomeScreen extends GetView<HomeController> {
               ),
               const SizedBox(height: 15),
               const RecommendationList(),
+              const SizedBox(height: 40),
             ],
           ),
         ),

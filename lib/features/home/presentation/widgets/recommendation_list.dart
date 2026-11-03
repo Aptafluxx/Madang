@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:madang/presentation/screens/home/widgets/restaurant_card.dart';
+import 'package:madang/features/home/presentation/widgets/restaurant_card.dart';
 
 class RecommendationList extends StatelessWidget {
   const RecommendationList({super.key});
@@ -31,7 +31,7 @@ class RecommendationList extends StatelessWidget {
     ];
 
     return SizedBox(
-      height: 295,
+      height: 290,
       child: ListView.separated(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         scrollDirection: Axis.horizontal,
