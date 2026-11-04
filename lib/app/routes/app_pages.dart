@@ -11,6 +11,8 @@ import 'package:madang/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:madang/features/splash/controller/splash_binding.dart';
 import 'package:madang/features/splash/presentation/splash_screen.dart';
 import 'package:madang/features/recent/presentation/recent_screen.dart';
+import 'package:madang/features/table/data/bindings/table_binding.dart';
+import 'package:madang/features/table/presentation/table_screen.dart';
 import 'package:madang/presentation/screens/profile/profile_screen.dart';
 import 'package:madang/presentation/screens/search/search_screen.dart';
 
@@ -44,22 +46,28 @@ class AppPages {
       name: AppRoutes.home,
       page: () => const HomeScreen(),
       binding: HomeBinding(),
-      transition: .noTransition
+      transition: .noTransition,
     ),
     GetPage(
       name: AppRoutes.search,
       page: () => SearchScreen(onNavigationTap: _onBottomNavigationTap),
-      transition: .noTransition
+      transition: .noTransition,
     ),
     GetPage(
       name: AppRoutes.recent,
       page: () => RecentScreen(onNavigationTap: _onBottomNavigationTap),
-      transition: .noTransition
+      transition: .noTransition,
     ),
     GetPage(
       name: AppRoutes.profile,
       page: () => ProfileScreen(onNavigationTap: _onBottomNavigationTap),
-      transition: .noTransition
+      transition: .noTransition,
+    ),
+    GetPage(
+      name: AppRoutes.table,
+      page: () => const TableScreen(),
+      binding: TableBinding(),
+      transition: .rightToLeft,
     ),
   ];
 }

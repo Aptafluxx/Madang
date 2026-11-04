@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-import 'package:madang/features/home/data/models/table_model.dart';
 import 'package:madang/features/home/data/repositories/home_repository.dart';
+import 'package:madang/features/table/data/models/table_model.dart';
 
 class HomeController extends GetxController {
   HomeController({HomeRepository? repository})

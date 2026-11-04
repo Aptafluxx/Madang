@@ -61,7 +61,9 @@ class HomeScreen extends GetView<HomeController> {
               const SizedBox(height: 30),
               MenuGrid(
                 onFoodTap: () {},
-                onTableTap: () {},
+                onTableTap: () {
+                  Get.toNamed(AppRoutes.table);
+                },
                 onPaymentTap: () {},
                 onMoreTap: () {},
               ),

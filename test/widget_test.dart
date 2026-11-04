@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:madang/features/table/presentation/table_screen.dart';
 
 import 'package:madang/main.dart';
 import 'package:madang/presentation/screens/food/food_screen.dart';
-import 'package:madang/presentation/screens/table/table_screen.dart';
 
 void main() {
   testWidgets('restaurant home screen renders expected content', (
@@ -46,7 +46,7 @@ void main() {
 
   testWidgets('table screen filters cards and navigates back', (tester) async {
     await tester.pumpWidget(
-      MaterialApp(home: TableScreen(onBack: _unusedBack)),
+      MaterialApp(home: TableScreen()),
     );
 
     expect(find.text('Table'), findsOneWidget);
@@ -74,7 +74,7 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
-        home: TableScreen(onBack: _unusedBack, initialQuery: 'Noodle'),
+        home: TableScreen(),
       ),
     );
 
@@ -99,7 +99,7 @@ void main() {
     addTearDown(() => tester.binding.setSurfaceSize(null));
 
     await tester.pumpWidget(
-      MaterialApp(home: TableScreen(onBack: _unusedBack)),
+      MaterialApp(home: TableScreen()),
     );
 
     await tester.tap(find.text('Work Table'));
