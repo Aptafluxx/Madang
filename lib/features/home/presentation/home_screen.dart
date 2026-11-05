@@ -46,7 +46,9 @@ class HomeScreen extends GetView<HomeController> {
                       ),
                     ),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.toNamed(AppRoutes.cart);
+                      },
                       icon: const Icon(
                         Icons.shopping_cart,
                         size: 28,
