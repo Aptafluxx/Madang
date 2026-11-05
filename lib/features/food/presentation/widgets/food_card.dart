@@ -5,7 +5,6 @@ import 'package:madang/app/theme/app_text_theme.dart';
 import 'package:madang/core/widgets/shimmer_box.dart';
 import 'package:madang/features/food/data/models/food_model.dart';
 
-/// Grid card: image, title, rating and price. Sized by its grid cell.
 class FoodCard extends StatelessWidget {
   const FoodCard({super.key, required this.food, this.onTap});
 
@@ -48,10 +47,8 @@ class FoodCard extends StatelessWidget {
                         food.title,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: AppTextStyles.subtitle2.copyWith(
-                          fontSize: 14,
+                        style: AppTextStyles.body2.copyWith(
                           fontWeight: FontWeight.w600,
-                          color: AppColors.black,
                         ),
                       ),
                       const SizedBox(height: 2),
@@ -60,7 +57,7 @@ class FoodCard extends StatelessWidget {
                           const Icon(
                             Icons.star,
                             size: 16,
-                            color: Color(0xFFF5B301),
+                            color: AppColors.accent,
                           ),
                           const SizedBox(width: 4),
                           Text(
@@ -72,15 +69,12 @@ class FoodCard extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 2),
+                      const SizedBox(height: 5),
                       Text(
                         food.priceText,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: AppTextStyles.subtitle2.copyWith(
-                          fontSize: 14,
-                          color: AppColors.black,
-                        ),
+                        style: AppTextStyles.body2.copyWith(fontWeight: .w500),
                       ),
                     ],
                   ),

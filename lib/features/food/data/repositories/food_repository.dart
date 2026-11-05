@@ -1,14 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:madang/features/food/data/models/food_model.dart';
 
-/// The only place that talks to the Firestore `foods` collection.
 class FoodRepository {
   FoodRepository({FirebaseFirestore? firestore})
-      : _firestore = firestore ?? FirebaseFirestore.instance;
+    : _firestore = firestore ?? FirebaseFirestore.instance;
 
   final FirebaseFirestore _firestore;
 
-  /// Every food, best rated first.
   Future<List<FoodModel>> getAllFoods() async {
     final snapshot = await _firestore.collection('foods').get();
 

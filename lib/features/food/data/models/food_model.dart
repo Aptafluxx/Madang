@@ -1,6 +1,5 @@
 import 'package:intl/intl.dart';
 
-/// One document of the Firestore `foods` collection.
 class FoodModel {
   const FoodModel({
     required this.id,
@@ -15,8 +14,8 @@ class FoodModel {
   final String id;
   final String title;
   final String description;
-  final num price;
-  final num rating;
+  final double price;
+  final double rating;
   final String imageUrl;
   final String category;
 
@@ -32,15 +31,15 @@ class FoodModel {
     );
   }
 
-  static num _toNum(Object? value) =>
-      value is num ? value : num.tryParse('$value') ?? 0;
+  static double _toNum(Object? value) =>
+      value is num ? value.toDouble() : double.tryParse('$value') ?? 0;
 
-  static final NumberFormat _money =
-      NumberFormat.currency(locale: 'en_US', symbol: '\$');
+  static final NumberFormat _money = NumberFormat.currency(
+    locale: 'en_US',
+    symbol: '\$',
+  );
 
-  /// 6.35 becomes "$6.35"
   String get priceText => _money.format(price);
 
-  /// 4.9 becomes "4.9"
   String get ratingText => rating.toStringAsFixed(1);
 }

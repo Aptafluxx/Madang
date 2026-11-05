@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:madang/app/routes/app_routes.dart';
 import 'package:madang/app/theme/app_colors.dart';
+import 'package:madang/core/widgets/custom_chip.dart';
 import 'package:madang/core/widgets/custom_text_field.dart';
 import 'package:madang/core/widgets/custom_top_navigation.dart';
 import 'package:madang/core/widgets/empty_state.dart';
@@ -27,37 +28,41 @@ class FoodScreen extends GetView<FoodController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.white,
-      appBar: CustomTopNavigation(
-        title: 'Food',
-        showCart: true,
-        onCartTap: _openCart,
-        elevation: 1,
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 16),
-          _buildSearchField(),
-          const SizedBox(height: 16),
-          _buildChips(),
-          const SizedBox(height: 20),
-          Expanded(child: _buildContent()),
-        ],
+    return GestureDetector(
+      onTap: FocusScope.of(context).unfocus,
+      child: Scaffold(
+        appBar: CustomTopNavigation(
+          title: 'Food',
+          showCart: true,
+          onCartTap: _openCart,
+        ),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 10),
+            _buildSearchField(),
+            const SizedBox(height: 16),
+            _buildChips(),
+            const SizedBox(height: 20),
+            Expanded(child: _buildContent()),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildSearchField() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 15),
       child: CustomTextField(
         hintText: 'Search food',
         controller: controller.searchTextController,
         prefixIcon: Icons.search,
         textInputAction: TextInputAction.search,
+        keyboardType: .text,
         onChanged: controller.onSearchChanged,
+        suffixIcon: Icons.cancel,
+        onSuffixTap: () => controller.clearFilters(),
       ),
     );
   }
@@ -66,31 +71,18 @@ class FoodScreen extends GetView<FoodController> {
     return SizedBox(
       height: 32,
       child: Obx(() {
-        // Read the Rx value here, outside itemBuilder, so Obx can track it.
         final selected = controller.selectedCategory.value;
         return ListView.separated(
           scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 15),
           itemCount: FoodController.categories.length,
-          separatorBuilder: (_, _) => const SizedBox(width: 16),
+          separatorBuilder: (_, _) => const SizedBox(width: 15),
           itemBuilder: (context, index) {
             final category = FoodController.categories[index];
-            return ChoiceChip(
-              label: Text(category),
-              selected: selected == category,
-              onSelected: (_) => controller.selectCategory(category),
-              side: BorderSide.none,
-              backgroundColor: const Color(0xFFF3F1F1),
-              selectedColor: const Color(0xFFDCEBEC),
-              labelPadding: const EdgeInsets.symmetric(horizontal: 8),
-              labelStyle: const TextStyle(
-                fontSize: 14,
-                color: Colors.black,
-                height: 1.6,
-              ),
-              visualDensity: VisualDensity.compact,
-              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              shape: const StadiumBorder(),
+            return CustomChip(
+              label: category,
+              isSelected: selected == category,
+              onTap: () => controller.selectCategory(category),
             );
           },
         );
@@ -121,7 +113,7 @@ class FoodScreen extends GetView<FoodController> {
 
       final foods = controller.foods;
       if (foods.isEmpty) {
-        return EmptyState.search(
+        return EmptyState.food(
           title: 'Well, there is no food you are looking for :(',
           actionLabel: 'Find Other Food',
           onAction: controller.clearFilters,
@@ -136,14 +128,12 @@ class FoodScreen extends GetView<FoodController> {
         itemBuilder: (_, index) {
           final food = foods[index];
           return FoodCard(food: food, onTap: () {});
-          // return FoodCard(food: food, onTap: () => _openDetail(food));
         },
       );
     });
   }
 }
 
-/// Shimmering placeholder cards shown while food loads.
 class _FoodGridSkeleton extends StatelessWidget {
   const _FoodGridSkeleton();
 

@@ -10,7 +10,6 @@ class FoodController extends GetxController {
 
   final FoodRepository _repository;
 
-  /// Chip labels. They must match the `category` values in Firestore.
   static const List<String> categories = [
     'Dinner Food',
     'Economic Food',
@@ -21,13 +20,11 @@ class FoodController extends GetxController {
 
   List<FoodModel> _all = [];
 
-  /// What the screen shows (after search + chip filtering).
   final RxList<FoodModel> foods = <FoodModel>[].obs;
 
   final RxBool isLoading = false.obs;
   final RxnString errorMessage = RxnString();
 
-  /// null means no chip is selected (show all).
   final RxnString selectedCategory = RxnString();
   final RxString searchQuery = ''.obs;
 
@@ -37,13 +34,11 @@ class FoodController extends GetxController {
   void onInit() {
     super.onInit();
 
-    // Opened with a category, e.g. /food?category=Hot%20Food
     final initial = Get.parameters['category'];
     if (initial != null && categories.contains(initial)) {
       selectedCategory.value = initial;
     }
 
-    // Re-filter when the chip changes, or 300 ms after the user stops typing.
     ever(selectedCategory, (_) => _applyFilters());
     debounce(
       searchQuery,
@@ -71,9 +66,6 @@ class FoodController extends GetxController {
     }
   }
 
-  // ── Called by the screen ──────────────────────────────────────
-
-  /// Tapping the selected chip again unselects it.
   void selectCategory(String category) {
     selectedCategory.value = selectedCategory.value == category
         ? null
@@ -86,7 +78,7 @@ class FoodController extends GetxController {
     selectedCategory.value = null;
     searchTextController.clear();
     searchQuery.value = '';
-    _applyFilters(); // refresh right away, no 300 ms wait
+    _applyFilters();
   }
 
   @override
@@ -94,8 +86,6 @@ class FoodController extends GetxController {
     searchTextController.dispose();
     super.onClose();
   }
-
-  // ── Internals ─────────────────────────────────────────────────
 
   void _applyFilters() {
     final category = selectedCategory.value;

@@ -104,7 +104,7 @@ class TableScreen extends GetView<TableController> {
 
       final tables = controller.tables;
       if (tables.isEmpty) {
-        return EmptyState(
+        return EmptyState.table(
           title: "Well, there is no table you are looking for :(",
           actionLabel: "Find Other Table",
           onAction: () => controller.clearFilters(),
