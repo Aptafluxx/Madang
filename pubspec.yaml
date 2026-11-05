@@ -47,7 +47,6 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/figma/
     - assets/images/
     - assets/images/promo_banners/
 
