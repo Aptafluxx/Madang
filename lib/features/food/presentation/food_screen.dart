@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:madang/app/routes/app_routes.dart';
 import 'package:madang/app/theme/app_colors.dart';
+import 'package:madang/core/widgets/app_snackbar.dart';
 import 'package:madang/core/widgets/custom_chip.dart';
 import 'package:madang/core/widgets/custom_text_field.dart';
 import 'package:madang/core/widgets/custom_top_navigation.dart';
 import 'package:madang/core/widgets/empty_state.dart';
 import 'package:madang/features/food/data/controllers/food_controller.dart';
+import 'package:madang/features/food/data/models/food_model.dart';
 import 'package:madang/features/food/presentation/widgets/food_card.dart';
+import 'package:madang/features/food/presentation/widgets/food_order_sheet.dart';
 import 'package:shimmer/shimmer.dart';
 
 const _gridPadding = EdgeInsets.fromLTRB(20, 0, 20, 24);
@@ -22,9 +25,6 @@ class FoodScreen extends GetView<FoodController> {
   const FoodScreen({super.key});
 
   void _openCart() => Get.toNamed(AppRoutes.cart);
-
-  // void _openDetail(FoodModel food) =>
-  //     Get.toNamed(AppRoutes.foodDetailPath(food.id), arguments: food);
 
   @override
   Widget build(BuildContext context) {
@@ -125,12 +125,24 @@ class FoodScreen extends GetView<FoodController> {
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         gridDelegate: _gridDelegate,
         itemCount: foods.length,
-        itemBuilder: (_, index) {
+        itemBuilder: (context, index) {
           final food = foods[index];
-          return FoodCard(food: food, onTap: () {});
+          return FoodCard(food: food, onTap: () => _openBooking(context, food));
         },
       );
     });
+  }
+
+  Future<void> _openBooking(BuildContext context, FoodModel food) async {
+    final booking = await FoodOrderSheet.show(context, food: food);
+    if (booking == null || !context.mounted) return;
+
+    AppSnackBar.show(
+      context,
+      message: 'Food added to cart',
+      actionLabel: 'Cart',
+      onAction: () => Get.toNamed(AppRoutes.cart),
+    );
   }
 }
 

@@ -5,8 +5,8 @@ import 'package:madang/app/theme/app_colors.dart';
 import 'package:madang/app/theme/app_text_theme.dart';
 import 'package:madang/core/widgets/custom_button.dart';
 
-/// Reusable bottom sheet: drag handle, optional title, scrollable body,
-/// optional pinned action button.
+/// Reusable bottom sheet: drag handle, optional full-width header (e.g. an
+/// image), optional title, scrollable body, optional pinned action button.
 ///
 /// Open it with [CustomBottomSheet.show]:
 /// ```dart
@@ -18,14 +18,15 @@ import 'package:madang/core/widgets/custom_button.dart';
 ///   onAction: () => Navigator.of(context).pop(true),
 /// );
 /// ```
-
 class CustomBottomSheet extends StatelessWidget {
   const CustomBottomSheet({
     super.key,
     required this.child,
     this.title,
     this.titleStyle,
+    this.header,
     this.showDragHandle = true,
+    this.dragHandleColor = AppColors.gray,
     this.showCloseButton = false,
     this.onClose,
     this.actionLabel,
@@ -43,12 +44,11 @@ class CustomBottomSheet extends StatelessWidget {
   final Widget child;
   final String? title;
   final TextStyle? titleStyle;
+  final Widget? header;
   final bool showDragHandle;
+  final Color dragHandleColor;
   final bool showCloseButton;
   final VoidCallback? onClose;
-
-  /// Pinned primary button at the bottom (e.g. "Booking table").
-  /// Hidden when null. A null [onAction] shows it disabled.
   final String? actionLabel;
   final VoidCallback? onAction;
   final bool isActionLoading;
@@ -65,7 +65,9 @@ class CustomBottomSheet extends StatelessWidget {
     required Widget child,
     String? title,
     TextStyle? titleStyle,
+    Widget? header,
     bool showDragHandle = true,
+    Color dragHandleColor = AppColors.gray,
     bool showCloseButton = false,
     VoidCallback? onClose,
     String? actionLabel,
@@ -86,14 +88,16 @@ class CustomBottomSheet extends StatelessWidget {
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      isDismissible: isDismissible,
+      isDismissible: true,
       enableDrag: enableDrag,
       barrierColor: barrierColor,
       backgroundColor: Colors.transparent,
       builder: (_) => CustomBottomSheet(
         title: title,
         titleStyle: titleStyle,
+        header: header,
         showDragHandle: showDragHandle,
+        dragHandleColor: dragHandleColor,
         showCloseButton: showCloseButton,
         onClose: onClose,
         actionLabel: actionLabel,
@@ -128,24 +132,37 @@ class CustomBottomSheet extends StatelessWidget {
         ? SingleChildScrollView(padding: padding, child: child)
         : Padding(padding: padding, child: child);
 
+    final handle = Container(
+      width: 40,
+      height: 4,
+      decoration: BoxDecoration(
+        color: dragHandleColor,
+        borderRadius: BorderRadius.circular(4),
+      ),
+    );
+
     final content = Column(
       mainAxisSize: fixedHeight == null ? MainAxisSize.min : MainAxisSize.max,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        // Drag handle
-        if (showDragHandle)
+        if (header != null)
+          Stack(
+            fit: StackFit.passthrough,
+            children: [
+              header!,
+              if (showDragHandle)
+                Positioned(
+                  top: 8,
+                  left: 0,
+                  right: 0,
+                  child: Center(child: handle),
+                ),
+            ],
+          )
+        else if (showDragHandle)
           Padding(
             padding: const EdgeInsets.only(top: 16, bottom: 20),
-            child: Center(
-              child: Container(
-                width: 40,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: AppColors.gray,
-                  borderRadius: BorderRadius.circular(4),
-                ),
-              ),
-            ),
+            child: Center(child: handle),
           )
         else
           const SizedBox(height: 20),
@@ -159,7 +176,11 @@ class CustomBottomSheet extends StatelessWidget {
                 Expanded(
                   child: Text(
                     title ?? '',
-                    style: titleStyle ?? AppTextStyles.title2,
+                    style:
+                        titleStyle ??
+                        AppTextStyles.title2.copyWith(
+                          color: AppColors.textPrimary,
+                        ),
                   ),
                 ),
                 if (showCloseButton)
@@ -178,8 +199,6 @@ class CustomBottomSheet extends StatelessWidget {
           Flexible(child: body)
         else
           Expanded(child: body),
-
-        // Footer: your widget, or the action button
         if (footer != null)
           footer!
         else if (actionLabel != null)
@@ -197,7 +216,6 @@ class CustomBottomSheet extends StatelessWidget {
     return Align(
       alignment: Alignment.bottomCenter,
       child: AnimatedPadding(
-        // Lifts the sheet above the keyboard.
         duration: const Duration(milliseconds: 150),
         padding: EdgeInsets.only(bottom: keyboard),
         child: ConstrainedBox(
