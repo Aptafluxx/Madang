@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:madang/app/routes/app_routes.dart';
 import 'package:madang/app/theme/app_colors.dart';
+import 'package:madang/core/widgets/app_snackbar.dart';
 import 'package:madang/features/home/data/controller/home_controller.dart';
 import 'package:madang/features/home/presentation/widgets/restaurant_card.dart';
+import 'package:madang/features/table/data/models/table_model.dart';
+import 'package:madang/features/table/presentation/widgets/table_booking_sheet.dart';
 import 'package:shimmer/shimmer.dart';
 
 class RecommendationList extends GetView<HomeController> {
@@ -59,11 +63,24 @@ class RecommendationList extends GetView<HomeController> {
               title: table.title,
               description: table.description,
               price: table.priceText,
+              onTap: () => _openBooking(context, table),
             );
           },
         ),
       );
     });
+  }
+
+  Future<void> _openBooking(BuildContext context, TableModel table) async {
+    final booking = await TableBookingSheet.show(context, table: table);
+    if (booking == null || !context.mounted) return;
+
+    AppSnackBar.show(
+      context,
+      message: 'Table added to cart',
+      actionLabel: 'Cart',
+      onAction: () => Get.toNamed(AppRoutes.cart),
+    );
   }
 }
 

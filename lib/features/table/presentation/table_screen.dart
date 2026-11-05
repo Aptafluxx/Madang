@@ -129,7 +129,7 @@ class TableScreen extends GetView<TableController> {
 
     AppSnackBar.show(
       context,
-      message: 'Successfully booked table',
+      message: 'Table added to cart',
       actionLabel: 'Cart',
       onAction: () => Get.toNamed(AppRoutes.cart),
     );

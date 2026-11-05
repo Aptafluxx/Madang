@@ -212,7 +212,11 @@ class CustomBottomSheet extends StatelessWidget {
                 top: Radius.circular(borderRadius),
               ),
             ),
-            child: SafeArea(top: false, child: content),
+            child: GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onTap: () => FocusScope.of(context).unfocus(),
+              child: SafeArea(top: false, child: content),
+            ),
           ),
         ),
       ),
