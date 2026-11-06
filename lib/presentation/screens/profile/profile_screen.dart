@@ -1,20 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:madang/features/home/presentation/widgets/bottom_navigation.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({
-    super.key,
-    required this.onNavigationTap,
-    this.onCartTap,
-  });
+  const ProfileScreen({super.key, this.onCartTap});
 
-  final ValueChanged<int> onNavigationTap;
   final VoidCallback? onCartTap;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       body: SafeArea(
         child: Center(
           child: SizedBox(
@@ -158,7 +151,6 @@ class ProfileScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                BottomNavigation(selectedIndex: 3, onTap: onNavigationTap),
               ],
             ),
           ),

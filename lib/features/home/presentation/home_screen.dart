@@ -7,7 +7,6 @@ import 'package:madang/features/home/data/controller/home_controller.dart';
 import 'package:madang/features/home/presentation/widgets/menu_grid.dart';
 import 'package:madang/features/home/presentation/widgets/promo_banner.dart';
 import 'package:madang/features/home/presentation/widgets/recommendation_list.dart';
-import 'package:madang/features/home/presentation/widgets/bottom_navigation.dart';
 
 class HomeScreen extends GetView<HomeController> {
   const HomeScreen({super.key});
@@ -86,27 +85,6 @@ class HomeScreen extends GetView<HomeController> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigation(
-        selectedIndex: 0,
-        onTap: _onBottomNavigationTap,
-      ),
     );
-  }
-}
-
-void _onBottomNavigationTap(int index) {
-  switch (index) {
-    case 0:
-      Get.offAllNamed(AppRoutes.home);
-      break;
-    case 1:
-      Get.offAllNamed(AppRoutes.search);
-      break;
-    case 2:
-      Get.offAllNamed(AppRoutes.recent);
-      break;
-    case 3:
-      Get.offAllNamed(AppRoutes.profile);
-      break;
   }
 }

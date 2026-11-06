@@ -7,19 +7,14 @@ import 'package:madang/features/auth/presentation/signup_screen.dart';
 import 'package:madang/features/cart/presentation/cart_screen.dart';
 import 'package:madang/features/food/data/bindings/food_binding.dart';
 import 'package:madang/features/food/presentation/food_screen.dart';
-import 'package:madang/features/home/data/controller/home_binding.dart';
-import 'package:madang/features/home/presentation/home_screen.dart';
+import 'package:madang/features/main/data/bindings/main_binding.dart';
+import 'package:madang/features/main/presentation/main_shell_screen.dart';
 import 'package:madang/features/onboarding/controller/onboarding_binding.dart';
 import 'package:madang/features/onboarding/presentation/onboarding_screen.dart';
-import 'package:madang/features/search/data/bindings/search_binding.dart';
 import 'package:madang/features/splash/controller/splash_binding.dart';
 import 'package:madang/features/splash/presentation/splash_screen.dart';
-import 'package:madang/features/recent/presentation/recent_screen.dart';
 import 'package:madang/features/table/data/bindings/table_binding.dart';
 import 'package:madang/features/table/presentation/table_screen.dart';
-import 'package:madang/presentation/screens/profile/profile_screen.dart';
-
-import '../../features/search/presentation/search_screen.dart';
 
 class AppPages {
   static final List<GetPage> pages = [
@@ -49,24 +44,26 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.home,
-      page: () => const HomeScreen(),
-      binding: HomeBinding(),
+      page: () => const MainShellScreen(),
+      binding: MainBinding(),
       transition: .noTransition,
     ),
     GetPage(
       name: AppRoutes.search,
-      page: () => SearchScreen(),
-      binding: SearchBinding(),
+      page: () => const MainShellScreen(),
+      binding: MainBinding(),
       transition: .noTransition,
     ),
     GetPage(
       name: AppRoutes.recent,
-      page: () => RecentScreen(onNavigationTap: _onBottomNavigationTap),
+      page: () => const MainShellScreen(),
+      binding: MainBinding(),
       transition: .noTransition,
     ),
     GetPage(
       name: AppRoutes.profile,
-      page: () => ProfileScreen(onNavigationTap: _onBottomNavigationTap),
+      page: () => const MainShellScreen(),
+      binding: MainBinding(),
       transition: .noTransition,
     ),
     GetPage(
@@ -87,21 +84,4 @@ class AppPages {
       transition: .rightToLeft,
     ),
   ];
-}
-
-void _onBottomNavigationTap(int index) {
-  switch (index) {
-    case 0:
-      Get.offAllNamed(AppRoutes.home);
-      break;
-    case 1:
-      Get.offAllNamed(AppRoutes.search);
-      break;
-    case 2:
-      Get.offAllNamed(AppRoutes.recent);
-      break;
-    case 3:
-      Get.offAllNamed(AppRoutes.profile);
-      break;
-  }
 }
