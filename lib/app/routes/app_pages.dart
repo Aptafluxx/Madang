@@ -4,6 +4,7 @@ import 'package:madang/features/auth/presentation/controller/login_binding.dart'
 import 'package:madang/features/auth/presentation/controller/signup_binding.dart';
 import 'package:madang/features/auth/presentation/login_screen.dart';
 import 'package:madang/features/auth/presentation/signup_screen.dart';
+import 'package:madang/features/cart/data/bindings/cart_binding.dart';
 import 'package:madang/features/cart/presentation/cart_screen.dart';
 import 'package:madang/features/food/data/bindings/food_binding.dart';
 import 'package:madang/features/food/presentation/food_screen.dart';
@@ -81,6 +82,7 @@ class AppPages {
     GetPage(
       name: AppRoutes.cart,
       page: () => const CartScreen(),
+      binding: CartBinding(),
       transition: .rightToLeft,
     ),
   ];
