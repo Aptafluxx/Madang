@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:madang/features/table/presentation/table_screen.dart';
-
 import 'package:madang/main.dart';
-import 'package:madang/presentation/screens/food/food_screen.dart';
 
 void main() {
   testWidgets('restaurant home screen renders expected content', (
@@ -20,7 +18,6 @@ void main() {
   testWidgets('food results update between empty and populated states', (
     tester,
   ) async {
-    await tester.pumpWidget(MaterialApp(home: FoodScreen(onBack: _unusedBack)));
 
     expect(find.text('Meatball Sweatie'), findsOneWidget);
     expect(find.text('Noodle Ex'), findsOneWidget);
@@ -120,5 +117,3 @@ void main() {
     expect(find.text('Cart'), findsOneWidget);
   });
 }
-
-void _unusedBack() {}

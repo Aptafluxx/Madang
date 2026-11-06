@@ -11,13 +11,15 @@ import 'package:madang/features/home/data/controller/home_binding.dart';
 import 'package:madang/features/home/presentation/home_screen.dart';
 import 'package:madang/features/onboarding/controller/onboarding_binding.dart';
 import 'package:madang/features/onboarding/presentation/onboarding_screen.dart';
+import 'package:madang/features/search/data/bindings/search_binding.dart';
 import 'package:madang/features/splash/controller/splash_binding.dart';
 import 'package:madang/features/splash/presentation/splash_screen.dart';
 import 'package:madang/features/recent/presentation/recent_screen.dart';
 import 'package:madang/features/table/data/bindings/table_binding.dart';
 import 'package:madang/features/table/presentation/table_screen.dart';
 import 'package:madang/presentation/screens/profile/profile_screen.dart';
-import 'package:madang/presentation/screens/search/search_screen.dart';
+
+import '../../features/search/presentation/search_screen.dart';
 
 class AppPages {
   static final List<GetPage> pages = [
@@ -53,7 +55,8 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.search,
-      page: () => SearchScreen(onNavigationTap: _onBottomNavigationTap),
+      page: () => SearchScreen(),
+      binding: SearchBinding(),
       transition: .noTransition,
     ),
     GetPage(
