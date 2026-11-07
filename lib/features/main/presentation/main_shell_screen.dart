@@ -4,7 +4,7 @@ import 'package:madang/core/widgets/custom_bottom_navigation.dart';
 import 'package:madang/features/home/presentation/home_screen.dart';
 import 'package:madang/features/recent/presentation/recent_screen.dart';
 import 'package:madang/features/search/presentation/search_screen.dart';
-import 'package:madang/presentation/screens/profile/profile_screen.dart';
+import 'package:madang/features/profile/presentation/profile_screen.dart';
 
 import '../data/controllers/main_controller.dart';
 
