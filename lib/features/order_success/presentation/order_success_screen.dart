@@ -4,6 +4,7 @@ import 'package:madang/app/routes/app_routes.dart';
 import 'package:madang/app/theme/app_colors.dart';
 import 'package:madang/app/theme/app_text_theme.dart';
 import 'package:madang/core/widgets/custom_button.dart';
+import 'package:madang/features/main/data/controllers/main_controller.dart';
 
 class OrderSuccessScreen extends StatelessWidget {
   const OrderSuccessScreen({super.key});
@@ -39,7 +40,12 @@ class OrderSuccessScreen extends StatelessWidget {
                   const SizedBox(height: 33),
                   CustomButton(
                     label: "Check Order",
-                    onPressed: () => Get.offAllNamed(AppRoutes.home),
+                    onPressed: () {
+                      Get.until(
+                        (route) => route.settings.name == AppRoutes.home,
+                      );
+                      Get.find<MainController>().changeTab(2);
+                    },
                   ),
                   const SizedBox(height: 12),
                   CustomButton(
