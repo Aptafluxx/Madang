@@ -11,6 +11,9 @@ import 'package:madang/features/main/data/bindings/main_binding.dart';
 import 'package:madang/features/main/presentation/main_shell_screen.dart';
 import 'package:madang/features/onboarding/controller/onboarding_binding.dart';
 import 'package:madang/features/onboarding/presentation/onboarding_screen.dart';
+import 'package:madang/features/order_success/presentation/order_success_screen.dart';
+import 'package:madang/features/payment_method/data/bindings/payment_binding.dart';
+import 'package:madang/features/payment_method/presentation/payment_method_screen.dart';
 import 'package:madang/features/splash/controller/splash_binding.dart';
 import 'package:madang/features/splash/presentation/splash_screen.dart';
 import 'package:madang/features/table/data/bindings/table_binding.dart';
@@ -81,6 +84,17 @@ class AppPages {
     GetPage(
       name: AppRoutes.cart,
       page: () => const CartScreen(),
+      transition: .rightToLeft,
+    ),
+    GetPage(
+      name: AppRoutes.payment,
+      page: () => const PaymentMethodScreen(),
+      binding: PaymentBinding(),
+      transition: .rightToLeft,
+    ),
+    GetPage(
+      name: AppRoutes.orderSuccess,
+      page: () => const OrderSuccessScreen(),
       transition: .rightToLeft,
     ),
   ];

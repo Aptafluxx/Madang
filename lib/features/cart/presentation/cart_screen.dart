@@ -34,7 +34,7 @@ class CartScreen extends GetView<CartController> {
   }
 
   void _onContinue() {
-    // TODO: open the payment method page when it exists.
+    Get.toNamed(AppRoutes.payment);
   }
 
   @override

@@ -25,6 +25,10 @@ class MadangApp extends StatelessWidget {
       theme: AppTheme.light,
       initialRoute: AppRoutes.splash,
       getPages: AppPages.pages,
+      unknownRoute: GetPage(
+        name: '/not-found',
+        page: () => const Scaffold(body: Center(child: Text('Page not found'))),
+      ),
     );
   }
 }

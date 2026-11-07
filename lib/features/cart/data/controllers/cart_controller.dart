@@ -217,4 +217,12 @@ class CartController extends GetxController {
           }),
     );
   }
+
+  void replaceWith(CartModel cart) {
+    foods.assignAll(cart.foods);
+    table.value = cart.table;
+    additions.assignAll(cart.additions);
+    _undo = null;
+    _save();
+  }
 }

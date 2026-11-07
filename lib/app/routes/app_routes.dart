@@ -10,4 +10,6 @@ class AppRoutes {
   static const String table = '/table';
   static const String food = '/food';
   static const String cart = '/cart';
+  static const String payment = '/payment';
+  static const String orderSuccess = '/orderSuccess';
 }
