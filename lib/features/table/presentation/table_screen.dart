@@ -7,6 +7,7 @@ import 'package:madang/core/widgets/custom_text_field.dart';
 import 'package:madang/core/widgets/custom_top_navigation.dart';
 import 'package:madang/core/widgets/empty_state.dart';
 import 'package:madang/core/widgets/shimmer_box.dart';
+import 'package:madang/features/cart/data/controllers/cart_controller.dart';
 import 'package:madang/features/table/data/controllers/table_controller.dart';
 import 'package:madang/features/table/data/models/table_model.dart';
 import 'package:madang/features/table/presentation/widgets/table_booking_sheet.dart';
@@ -126,6 +127,9 @@ class TableScreen extends GetView<TableController> {
   Future<void> _openBooking(BuildContext context, TableModel table) async {
     final booking = await TableBookingSheet.show(context, table: table);
     if (booking == null || !context.mounted) return;
+
+    Get.find<CartController>().addTable(booking);
+    
 
     AppSnackBar.show(
       context,

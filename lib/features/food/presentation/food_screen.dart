@@ -7,6 +7,7 @@ import 'package:madang/core/widgets/custom_chip.dart';
 import 'package:madang/core/widgets/custom_text_field.dart';
 import 'package:madang/core/widgets/custom_top_navigation.dart';
 import 'package:madang/core/widgets/empty_state.dart';
+import 'package:madang/features/cart/data/controllers/cart_controller.dart';
 import 'package:madang/features/food/data/controllers/food_controller.dart';
 import 'package:madang/features/food/data/models/food_model.dart';
 import 'package:madang/features/food/presentation/widgets/food_card.dart';
@@ -136,6 +137,8 @@ class FoodScreen extends GetView<FoodController> {
   Future<void> _openBooking(BuildContext context, FoodModel food) async {
     final booking = await FoodOrderSheet.show(context, food: food);
     if (booking == null || !context.mounted) return;
+
+    Get.find<CartController>().addFood(booking.food, booking.quantity);
 
     AppSnackBar.show(
       context,

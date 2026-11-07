@@ -8,6 +8,7 @@ import 'package:madang/core/widgets/custom_chip.dart';
 import 'package:madang/core/widgets/custom_text_field.dart';
 import 'package:madang/core/widgets/custom_top_navigation.dart';
 import 'package:madang/core/widgets/empty_state.dart';
+import 'package:madang/features/cart/data/controllers/cart_controller.dart';
 import 'package:madang/features/food/presentation/widgets/food_card.dart';
 import 'package:madang/features/food/presentation/widgets/food_order_sheet.dart';
 import 'package:madang/features/home/presentation/widgets/restaurant_card.dart';
@@ -35,6 +36,9 @@ class SearchScreen extends GetView<SearchPageController> {
     if (item.type == SearchItemType.food) {
       final order = await FoodOrderSheet.show(context, food: item.food!);
       if (order == null || !context.mounted) return;
+
+      Get.find<CartController>().addFood(order.food, order.quantity);
+
       AppSnackBar.show(
         context,
         message: 'Added to your order',
@@ -44,6 +48,9 @@ class SearchScreen extends GetView<SearchPageController> {
     } else {
       final booking = await TableBookingSheet.show(context, table: item.table!);
       if (booking == null || !context.mounted) return;
+
+      Get.find<CartController>().addTable(booking);
+
       AppSnackBar.show(
         context,
         message: 'Table added to cart',

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:madang/app/routes/app_routes.dart';
 import 'package:madang/app/theme/app_colors.dart';
 import 'package:madang/core/widgets/app_snackbar.dart';
+import 'package:madang/features/cart/data/controllers/cart_controller.dart';
 import 'package:madang/features/home/data/controller/home_controller.dart';
 import 'package:madang/features/home/presentation/widgets/restaurant_card.dart';
 import 'package:madang/features/table/data/models/table_model.dart';
@@ -74,6 +75,8 @@ class RecommendationList extends GetView<HomeController> {
   Future<void> _openBooking(BuildContext context, TableModel table) async {
     final booking = await TableBookingSheet.show(context, table: table);
     if (booking == null || !context.mounted) return;
+
+    Get.find<CartController>().addTable(booking);
 
     AppSnackBar.show(
       context,
