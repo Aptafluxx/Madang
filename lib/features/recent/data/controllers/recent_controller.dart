@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:madang/features/payment_method/data/models/order_model.dart';
 import 'package:madang/features/recent/data/repositories/recent_repository.dart';
@@ -65,11 +64,10 @@ class RecentController extends GetxController {
       _lastLoaded = DateTime.now();
     } on FirebaseException catch (e) {
       // For 'failed-precondition' the message contains the index link.
-      debugPrint('Recent: ${e.code} ${e.message}');
       errorMessage.value = switch (e.code) {
         'permission-denied' => 'You do not have permission to view orders.',
         'failed-precondition' =>
-          'Orders need a one-time Firestore index. Check the debug console.',
+          'Orders are temporarily unavailable. Please try again later.',
         'unavailable' => 'Network error. Please check your internet connection.',
         _ => 'Could not load your orders. Please try again.',
       };
