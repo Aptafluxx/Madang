@@ -1,15 +1,20 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:madang/features/auth/data/models/user_model.dart';
+import 'package:madang/features/auth/data/repositories/auth_repository.dart';
 import 'package:madang/features/home/data/repositories/home_repository.dart';
 import 'package:madang/features/table/data/models/table_model.dart';
 
 class HomeController extends GetxController {
-  HomeController({HomeRepository? repository})
-    : _repository = repository ?? HomeRepository();
+  HomeController({HomeRepository? repository, AuthRepository? authRepository})
+    : _repository = repository ?? HomeRepository(),
+      _authRepository = authRepository ?? AuthRepository();
 
   final HomeRepository _repository;
+  final AuthRepository _authRepository;
 
   final RxList<TableModel> tables = <TableModel>[].obs;
+  final Rxn<UserModel> user = Rxn<UserModel>();
   final RxBool isLoading = false.obs;
   final RxnString errorMessage = RxnString();
 
@@ -17,6 +22,7 @@ class HomeController extends GetxController {
   void onInit() {
     super.onInit();
     loadTables();
+    _loadProfile();
   }
 
   Future<void> loadTables() async {
@@ -34,13 +40,18 @@ class HomeController extends GetxController {
       isLoading.value = false;
     }
   }
-}
 
-// Future<void> logout() async {
-//   try {
-//     await AuthRepository.instance.logout();
-//     Get.offAllNamed(AppRoutes.login);
-//   } on AuthException catch (e) {
-//     AppSnackBar.error(Get.context!, e.message);
-//   }
-// }
+  Future<void> _loadProfile() async {
+    try {
+      user.value = await _authRepository.fetchUserName();
+    } catch (_) {
+      // The screen falls back to the Firebase Auth values.
+    }
+  }
+
+  String get displayName {
+    final name = user.value?.name ?? '';
+    if (name.isNotEmpty) return name;
+    return FirebaseAuth.instance.currentUser?.displayName ?? '';
+  }
+}

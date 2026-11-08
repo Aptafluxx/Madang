@@ -24,18 +24,23 @@ class HomeScreen extends GetView<HomeController> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Expanded(
+                    Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'Hi, Michael',
-                            style: AppTextStyles.title1,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          SizedBox(height: 4),
-                          Text(
+                          Obx(() {
+                            final name = controller.displayName;
+                            return Text(
+                              name.isEmpty ? 'Your name' : name,
+                              style: AppTextStyles.title1,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              softWrap: true,
+                            );
+                          }),
+
+                          const SizedBox(height: 4),
+                          const Text(
                             'Get your favorite food here!',
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
