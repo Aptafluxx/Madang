@@ -6,6 +6,7 @@ import 'package:madang/features/cart/data/controllers/cart_controller.dart';
 import 'package:madang/features/cart/data/models/cart_model.dart';
 import 'package:madang/features/payment_method/data/models/payment_method.dart';
 import 'package:madang/features/payment_method/data/repositories/payment_repository.dart';
+import 'package:madang/features/recent/data/controllers/recent_controller.dart';
 
 class PaymentController extends GetxController {
   PaymentController({PaymentRepository? repository})
@@ -46,6 +47,9 @@ class PaymentController extends GetxController {
       );
 
       await _cart.clear();
+      if (Get.isRegistered<RecentController>()) {
+        Get.find<RecentController>().refreshOrders();
+      }
 
       // Replace cart + payment with the success page, keeping Home
       // underneath, so Back can never return to payment.
